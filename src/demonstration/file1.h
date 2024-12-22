@@ -1,8 +1,11 @@
 /**
- * @file file1.cpp
+ * @file file1.h
  * @brief This is meant for demonstrating the use of the logger from a file
  * different than where the logger is instantiated.
  */
+#ifndef FILE1_H
+#define FILE1_H
+
 #include "logger/log.h"
 
 namespace file1 {
@@ -18,3 +21,5 @@ void myFunc() {
 }
 
 } // namespace file1
+
+#endif
