@@ -50,7 +50,10 @@ void endLogThread(std::thread& thread) {
         std::lock_guard<std::mutex> lock(endLoopMtx);
         endLoop = true;
     }
-    thread.join();
+
+    if (thread.joinable()) {
+        thread.join();
+    }
 }
 
 /**
