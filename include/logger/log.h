@@ -15,6 +15,7 @@
 #include <queue>
 #include <thread>
 #include <fstream>
+#include <condition_variable>
 
 /**
  * @brief Adds a message to the log queue.
@@ -39,6 +40,7 @@ std::queue<std::string> rk::log::logQueue; \
 std::mutex rk::log::endLoopMtx; \
 bool rk::log::endLoop; \
 std::ofstream rk::log::logFile("logs.txt"); \
+std::condition_variable rk::log::cv; \
 
 /**
  * @brief Verifies whether the log file was created and opened.
@@ -59,6 +61,7 @@ extern std::queue<std::string> logQueue; /**< Main queue for holding log message
 extern std::mutex endLoopMtx;
 extern bool endLoop; /**< Determines whether or not to end the log loop */ 
 extern std::ofstream logFile;
+extern std::condition_variable cv;
 
 /**
  * @brief Adds a message to the log queue.
@@ -75,7 +78,15 @@ void logMessage(const std::string funcName, const Args&... args) {
     (oss << ... << args);
     std::lock_guard<std::mutex> lock(logQueueMutex);
     logQueue.push(oss.str());
+    cv.notify_one();
 }
+
+/**
+ * @brief Predicate used by the condition variable in the log loop to determine whether to continue waiting or not.
+ * 
+ * @return Whether or not to resume the log loop.
+ */
+bool condVarPredicate();
 
 /**
  * @brief Checks the log queue for messages and prints them.
