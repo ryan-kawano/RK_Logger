@@ -9,7 +9,9 @@ namespace log {
 
 /**
  * Checks whether the log queue has messages or the endLoop flag is true. If either are true, it will return true,
- * stop the condition variable from waiting, and resume execution of the log loop.
+ * stop the condition variable from waiting, and resume execution of the log loop. This should be called as part of
+ * the log loop's condition variable, so the mutex for the log queue will be locked by the condition variable when
+ * this function executes, so it doesn't need to be locked explicitly.
  */
 bool condVarPredicate() {
     std::unique_lock<std::mutex> endLoopLock(endLoopMtx);
