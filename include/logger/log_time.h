@@ -5,17 +5,6 @@
 #ifndef LOG_TIME_H
 #define LOG_TIME_H
 
-// Bit Mask that determines what format to print the date in
-#define DATE_FORMAT 0x0 | USE_YYYY_MM_DD
-#define USE_MM_DD_YYYY 0x1 // i.e., Feb 4, 2025 is formatted as 02-04-2025
-#define USE_DD_MM_YYYY 0x2 // i.e., Feb 4, 2025 is formatted as 04-02-2025
-#define USE_YYYY_MM_DD 0x4 // i.e., Feb 4, 2025 is formatted as 2025-02-04
-
-// Bit Mask that determines whether to print the name of the month or the month number
-#define MONTH_FORMAT 0x0 | USE_MONTH_NUM
-#define USE_MONTH_NUM 0x1 // Prints the months name, e.g., Jan, Feb, etc.
-#define USE_MONTH_NAME 0x2 // Prints the month's number, e.g., 01, 02, etc.
-
 #include <chrono>
 #include <string>
 
@@ -48,12 +37,12 @@ namespace time {
     std::string generateTimeStamp(time_point);
 
     /**
-     * @brief Converts a number to the english name.
+     * @brief Converts a month number to the english name.
      * 
-     * It starts at 0 and goes up, so January = 0, February = 1, etc.
+     * It starts at 0 (not 1) and goes up, so January = 0, February = 1, etc.
      * 
      * @brief The month number.
-     * @return The month's name abbreviated to the first 3 letters.
+     * @return The month's name abbreviated to the first 3 letters, e.g., Jan, Feb, etc.
      */
     std::string monthNumToName(const uint8_t);
 

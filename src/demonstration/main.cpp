@@ -15,6 +15,9 @@ int main() {
 
     // Call this third to verify that the log file was created and opened
     LOG_VERIFY
+
+    // Read config settings from a file (if it exists) and update the internal config
+    rk::config::getLoggingConfig();
     
     // Log a message from main
     LOG("Inside main\n");

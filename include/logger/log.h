@@ -19,6 +19,7 @@
 #include <chrono>
 
 #include "logger/log_time.h"
+#include "logger/log_config.h"
 
 /**
  * @brief Adds a message to the log queue.

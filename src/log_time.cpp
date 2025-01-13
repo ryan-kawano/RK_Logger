@@ -5,12 +5,13 @@
 #include <iomanip>
 
 #include "logger/log_time.h"
+#include "logger/log_config.h"
 
 namespace rk {
 namespace time {
 
     std::string generateTimeStamp(time_point time_point) {
-        // Convert to other type get the parts of the time
+        // Convert time to other type for easier access to sub-units
         std::time_t time_t = system_clock::to_time_t(time_point);
         std::tm tm_local = *std::localtime(&time_t);
 
@@ -21,16 +22,17 @@ namespace time {
         std::string minute = std::to_string(tm_local.tm_min);
         std::string second = std::to_string(tm_local.tm_sec);
 
-        // Get month based on the setting specified (as a name or a number)
+        // Get month based on the setting specified (as a name or as a number)
         std::string month;
-        if (MONTH_FORMAT & USE_MONTH_NUM) {
+        const rk::config::ActualValue monthFormat = std::get<1>(rk::config::configMap.at("month_format"));
+        if (monthFormat & std::get<0>(rk::config::configMap.at("month_format")).at("MONTH_NUM")) {
             month = std::to_string(tm_local.tm_mon + 1);
             month = (tm_local.tm_mon < 9 ? "0" : "") + month; // Add a 0 to the beginning of any single-digit months to make it 2 digits. tm_mon starts at 0, so 9 is max, not 10.
         }
-        else if(MONTH_FORMAT & USE_MONTH_NAME) {
+        else if(monthFormat & std::get<0>(rk::config::configMap.at("month_format")).at("MONTH_NAME")) {
             month = monthNumToName(tm_local.tm_mon);
         }
-        else { // Generic form if MONTH_FORMAT isn't specified. This is just in case MONTH_FORMAT gets undefined, it should always be defined though.
+        else { // Generic form if month format isn't specified. This is just in case month format gets undefined, it should always be defined though.
             month = std::to_string(tm_local.tm_mon + 1);
             month = (tm_local.tm_mon < 9 ? "0" : "") + month; // Add a 0 to the beginning of any single-digit months to make it 2 digits. tm_mon starts at 0, so 9 is max, not 10.
         }
@@ -41,7 +43,8 @@ namespace time {
         
         // Format date based on the setting provided
         std::string timeStamp;
-        if (DATE_FORMAT & USE_MM_DD_YYYY) {
+        const rk::config::ActualValue dateFormat = std::get<1>(rk::config::configMap.at("date_format"));
+        if (dateFormat & std::get<0>(rk::config::configMap.at("date_format")).at("MM_DD_YYYY")) {
             timeStamp = "[" +
                         month +
                         "-" +
@@ -50,7 +53,7 @@ namespace time {
                         year +
                         "|";
         }
-        else if (DATE_FORMAT & USE_DD_MM_YYYY) {
+        else if (dateFormat & std::get<0>(rk::config::configMap.at("date_format")).at("DD_MM_YYYY")) {
             timeStamp = "[" +
                         day +
                         "-" +
@@ -59,7 +62,7 @@ namespace time {
                         year +
                         "|";
         }
-        else if (DATE_FORMAT & USE_YYYY_MM_DD) {
+        else if (dateFormat & std::get<0>(rk::config::configMap.at("date_format")).at("YYYY_MM_DD")) {
             timeStamp = "[" +
                         year +
                         "-" +
@@ -68,7 +71,7 @@ namespace time {
                         day +
                         "|";
         }
-        else { // Generic form if DATE_FORMAT isn't specified. This is just in case DATE_FORMAT gets undefined, it should always be defined though.
+        else { // Generic form if date format isn't specified. This is just in case date format gets undefined, it should always be defined though.
             timeStamp = "[" +
                         year +
                         "-" +
