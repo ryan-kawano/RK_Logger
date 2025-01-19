@@ -4,21 +4,23 @@
  */
 #include "logger/log.h"
 #include "file1.h"
+
 #include <thread>
 
 // Call this first to setup the extern variables
 LOG_SETUP
 
 int main() {
-    // Call this second to start the log thread
+    // Call this second to read config settings from a file (if it exists) and update the internal config
+    rk::config::getLoggingConfig();
+    rk::time::updateTimeStampFuncs();
+
+    // Call this third to start the log thread
     std::thread logThread = rk::log::startLogThread();
 
-    // Call this third to verify that the log file was created and opened
+    // Call this fourth to verify that the log file was created and opened
     LOG_VERIFY
 
-    // Read config settings from a file (if it exists) and update the internal config
-    rk::config::getLoggingConfig();
-    
     // Log a message from main
     LOG("Inside main\n");
 

@@ -17,10 +17,10 @@ namespace config {
     const inline std::string CONFIG_FILE_NAME = "rk_config.txt";
 
     using PossibleValuesMap = const std::unordered_map<std::string, uint8_t>;
-    extern PossibleValuesMap dateFormatPossibleValues; /**< Bit Masks for setting the date format */
-    extern PossibleValuesMap monthFormatPossibleValues; /**< Bit Masks for setting the month format */
+    extern PossibleValuesMap dateFormatPossibleValues;
+    extern PossibleValuesMap monthFormatPossibleValues;
 
-    using ActualValue = uint8_t; /**< The value that will be used for the Config setting */
+    using ActualValue = uint8_t; /**< The type of value that will be used for the Config setting */
     using ConfigMap = std::unordered_map<std::string, std::tuple<PossibleValuesMap, ActualValue>>;
     extern ConfigMap configMap; /**< Holds the current configuration along with other config-related info */
 
@@ -29,9 +29,10 @@ namespace config {
      * 
      * If no config file is provided, then it will just use the default settings.
      * 
-     * @param path The path to the config file. The default path is the executables path. Override it by providing a path.
+     * @param path The path to the config file including the file name itself. The default path is the same directory as the executables.
+     * Override it by providing a custom path.
      */
-    void getLoggingConfig(const std::filesystem::path path = std::filesystem::current_path()/rk::config::CONFIG_FILE_NAME);
+    void getLoggingConfig(const std::filesystem::path& path = std::filesystem::current_path()/rk::config::CONFIG_FILE_NAME);
 
     /**
      * @brief Updates the config map with the values provided.
