@@ -29,7 +29,7 @@
  * log queue. It can take any number of arguments for logging. See the demonstration directory for an
  * example.
  */
-#define LOG(...) rk::log::logMessage(rk::time::system_clock::now(), __func__, __VA_ARGS__)
+#define RK_LOG(...) rk::log::logMessage(rk::time::system_clock::now(), __func__, __VA_ARGS__)
 
 /**
  * @brief Sets up the extern variables from the rk::log namespace.

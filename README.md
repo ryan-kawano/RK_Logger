@@ -8,10 +8,10 @@ Implementation of a logger in C++. It uses a ```std::queue<std::string>``` to ho
 3. Call the macro ```LOG_SETUP``` in order to setup some global variables.
 4. Call the function ```rk::log::startLogThread()``` in order to start the log thread. This function will return the ```std::thread``` that it created. Save it in a variable in order to end the log thread later.
 5. Call the macro ```LOG_VERIFY``` in order to verify that the log file was created and opened.
-6. Log messages using the ```LOG``` macro. Example usage: 
+6. Log messages using the ```RK_LOG``` macro. Example usage:
 ```
 int number = 5;
-LOG("The number is: ", number, "\n");
+RK_LOG("The number is: ", number, "\n");
 ```
 If this is run from main(), it will print:
 ```

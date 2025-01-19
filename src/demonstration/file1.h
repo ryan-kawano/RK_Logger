@@ -17,7 +17,7 @@ namespace file1 {
  * than where the logger was instantiated.
  */
 void myFunc() {
-    LOG("Inside other_file.cpp\n");
+    RK_LOG("Inside other_file.cpp\n");
 }
 
 } // namespace file1

@@ -22,19 +22,19 @@ int main() {
     LOG_VERIFY
 
     // Log a message from main
-    LOG("Inside main\n");
+    RK_LOG("Inside main\n");
 
     // Log a message with some variables
     int number = 10;
     std::string name = "Ryan";
-    LOG("The number is ", number, ". The name is ", name, "\n");
+    RK_LOG("The number is ", number, ". The name is ", name, "\n");
 
     // Log a message from another file
     file1::myFunc();
 
     // Log a message from another thread. This should print a different thread id and function name
     std::thread otherThread([] () {
-        LOG("Inside other thread\n");
+        RK_LOG("Inside other thread\n");
     });
     otherThread.join();
 
