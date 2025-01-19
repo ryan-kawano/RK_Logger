@@ -50,7 +50,7 @@ void logQueueLoop() {
 }
 
 /**
- * Creates the thread that will run the log loop function - logQueueLoop.
+ * Creates the thread that will run the log loop function "logQueueLoop()".
  */
 std::thread startLogThread() {
     std::thread logThread(logQueueLoop);
