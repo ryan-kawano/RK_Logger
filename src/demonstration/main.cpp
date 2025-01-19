@@ -2,7 +2,7 @@
  * @file main.cpp
  * @brief Main file for demonstrating the use of the logger.
  */
-#include "logger/log.h"
+#include "rk_logger/log.h"
 #include "file1.h"
 
 #include <thread>
