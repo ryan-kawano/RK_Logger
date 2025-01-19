@@ -7,6 +7,29 @@
 namespace rk {
 namespace log {
 
+std::mutex logQueueMutex;
+std::queue<std::string> logQueue;
+std::mutex endLoopMtx;
+bool endLoop;
+std::ofstream logFile("logs.txt");
+std::condition_variable cv;
+
+std::thread startLogger(const std::filesystem::path& configPath) {
+    // Read config settings from a file (if it exists) and update the internal config
+    rk::config::getLoggingConfig(configPath);
+    rk::time::updateTimeStampFuncs();
+
+    std::thread logThread = startLogThread();
+    LOG_VERIFY
+
+    return logThread;
+}
+
+void stopLogger(std::thread logThread) {
+    endLogThread(std::move(logThread));
+    closeLogFile();
+}
+
 /**
  * Checks whether the log queue has messages or the endLoop flag is true. If either are true, it will return true,
  * stop the condition variable from waiting, and resume execution of the log loop. This should be called as part of
@@ -50,7 +73,7 @@ void logQueueLoop() {
 }
 
 /**
- * Creates the thread that will run the log loop function "logQueueLoop()".
+ * Creates the thread that will run the log loop function "logQueueLoop()". This should be called before doing any logging.
  */
 std::thread startLogThread() {
     std::thread logThread(logQueueLoop);
@@ -61,7 +84,7 @@ std::thread startLogThread() {
  * Ends the log thread that was passed in by first setting the endLoop flag to
  * true. This will allow the log loop to exit. Then, it will join the thread.
  */
-void endLogThread(std::thread& thread) {
+void endLogThread(std::thread thread) {
     {
         std::lock_guard<std::mutex> lock(endLoopMtx);
         endLoop = true;

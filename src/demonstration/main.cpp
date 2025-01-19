@@ -7,19 +7,9 @@
 
 #include <thread>
 
-// Call this first to setup the extern variables
-LOG_SETUP
-
 int main() {
-    // Call this second to read config settings from a file (if it exists) and update the internal config
-    rk::config::getLoggingConfig();
-    rk::time::updateTimeStampFuncs();
-
-    // Call this third to start the log thread
-    std::thread logThread = rk::log::startLogThread();
-
-    // Call this fourth to verify that the log file was created and opened
-    LOG_VERIFY
+    // Call this function to start the logger. Save the logging thread for when the program ends.
+    std::thread logThread = rk::log::startLogger();
 
     // Log a message from main
     RK_LOG("Inside main\n");
@@ -38,9 +28,8 @@ int main() {
     });
     otherThread.join();
 
-    // Call these at the end of the program to end the log thread and close the log file
-    rk::log::endLogThread(logThread);
-    rk::log::closeLogFile();
+    // Call this at the end of the program to shutdown the logger
+    rk::log::stopLogger(std::move(logThread));
 
     return 0;
 }

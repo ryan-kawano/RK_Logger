@@ -32,25 +32,7 @@
 #define RK_LOG(...) rk::log::logMessage(rk::time::system_clock::now(), __func__, __VA_ARGS__)
 
 /**
- * @brief Sets up the extern variables from the rk::log namespace.
- * 
- * Call this in ONE source file, most likely main() or wherever the central point
- * of the project is. The variables it sets up are used throughout the logging
- * mechanism.
- */
-#define LOG_SETUP \
-std::mutex rk::log::logQueueMutex; \
-std::queue<std::string> rk::log::logQueue; \
-std::mutex rk::log::endLoopMtx; \
-bool rk::log::endLoop; \
-std::ofstream rk::log::logFile("logs.txt"); \
-std::condition_variable rk::log::cv; \
-
-/**
  * @brief Verifies whether the log file was created and opened.
- * 
- * Call this after running the LOG_SETUP macro and startLogThread(). This will
- * throw an exception if the file wasn't opened or created.
  */
 #define LOG_VERIFY \
 if (!rk::log::logFile) { \
@@ -66,6 +48,21 @@ extern std::mutex endLoopMtx;
 extern bool endLoop; /**< Determines whether or not to end the log loop */ 
 extern std::ofstream logFile;
 extern std::condition_variable cv;
+
+/**
+ * @brief The main function that starts the logger. Sets up various things like configs, logging threads, etc.
+ * 
+ * @param configPath The path to the config file.
+ * @return The thread that is running the log loop.
+ */
+std::thread startLogger(const std::filesystem::path& configPath = std::filesystem::current_path()/rk::config::CONFIG_FILE_NAME);
+
+/**
+ * @brief Ends the logger.
+ * 
+ * @param std::thread The thread that was running the log loop.
+ */
+void stopLogger(std::thread);
 
 /**
  * @brief Adds a message to the log queue.
@@ -102,8 +99,6 @@ void logQueueLoop();
 /**
  * @brief Starts the log thread.
  * 
- * Call this before doing any logging.
- * 
  * @return The thread that was started for the log loop.
  */
 std::thread startLogThread();
@@ -114,7 +109,7 @@ std::thread startLogThread();
  * @param std::thread The thread that is running the log loop. Most likely one would pass in the
  * thread that was created in startLogThread().
  */
-void endLogThread(std::thread&);
+void endLogThread(std::thread);
 
 /**
  * @brief Closes the log file.
