@@ -97,7 +97,7 @@ bool condVarPredicate();
 void logQueueLoop();
 
 /**
- * @brief Starts the log thread.
+ * @brief Starts the log thread. This should be called before doing any logging.
  * 
  * @return The thread that was started for the log loop.
  */

@@ -73,7 +73,7 @@ void logQueueLoop() {
 }
 
 /**
- * Creates the thread that will run the log loop function "logQueueLoop()". This should be called before doing any logging.
+ * Creates the thread that will run the log loop function "logQueueLoop()".
  */
 std::thread startLogThread() {
     std::thread logThread(logQueueLoop);
