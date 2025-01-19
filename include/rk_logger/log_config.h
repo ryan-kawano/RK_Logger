@@ -29,10 +29,10 @@ extern ConfigMap configMap; /**< Holds the current configuration along with othe
  * 
  * If no config file is provided, then it will just use the default settings.
  * 
- * @param path The path to the config file including the file name itself. The default path is the same directory as the executables.
+ * @param path The path to the config file including the file name itself. The default path is the same directory as the executable.
  * Override it by providing a custom path.
  */
-void getLoggingConfig(const std::filesystem::path& path = std::filesystem::current_path()/rk::config::CONFIG_FILE_NAME);
+void getLoggingConfig(const std::filesystem::path&);
 
 /**
  * @brief Updates the config map with the values provided.
