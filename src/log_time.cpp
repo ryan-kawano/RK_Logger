@@ -62,7 +62,7 @@ void updateMonthFunc() {
         monthFunc = [] (const int monthNum) {
             std::string month;
             month = std::to_string(monthNum);
-            month = (monthNum < 10 ? "0" : "") + month; // Add a 0 to the beginning of any single-digit months to make it 2 digits. tm_mon starts at 0, so 9 is max, not 10.
+            month = (monthNum < 10 ? "0" : "") + month; // Add a 0 to the beginning of any single-digit months to make it 2 digits.
             return month;
         };
     }
