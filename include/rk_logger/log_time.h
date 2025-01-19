@@ -48,6 +48,16 @@ std::string generateTimeStamp(time_point);
 std::string monthNumToName(const uint8_t);
 
 /**
+ * @brief Adds zeros to the beginning of a number to make it have a specific number of characters.
+ * 
+ * This is meant for keeping the time stamps uniform in size.
+ * 
+ * @param std::string The number to modify.
+ * @param size_t The target size to change it to.
+ */
+void padWithZeros(std::string&, const size_t);
+
+/**
  * @brief Converts a month to the format specified by the config.
  * 
  * This function is determined at runtime.

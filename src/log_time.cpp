@@ -17,18 +17,23 @@ std::string generateTimeStamp(time_point time_point) {
 
     std::string year = std::to_string(tm_local.tm_year + 1900); // tm_year starts from 1900
     std::string day = std::to_string(tm_local.tm_mday);
-    day = (tm_local.tm_mday < 10 ? "0" : "") + day; // Change any single-digit days to double-digit by adding a 0
+    padWithZeros(day, 2);
     std::string hour = std::to_string(tm_local.tm_hour);
+    padWithZeros(hour, 2);
     std::string minute = std::to_string(tm_local.tm_min);
+    padWithZeros(minute, 2);
     std::string second = std::to_string(tm_local.tm_sec);
+    padWithZeros(second, 2);
 
     // Get month based on the config settings (as a name or as a number)
     std::string month;
     month = monthFunc(tm_local.tm_mon + 1); // Add 1 because std::tm's months start at 0
+    padWithZeros(month, 2);
 
     // Need to calculate milliseconds from nanoseconds
     auto seconds_time_point = std::chrono::duration_cast<std::chrono::seconds>(time_point.time_since_epoch());
     std::string milliseconds = std::to_string((time_point.time_since_epoch().count() - std::chrono::duration_cast<std::chrono::nanoseconds>(seconds_time_point).count()) / static_cast<int>(1e6));
+    padWithZeros(milliseconds, 3);
 
     // Format date based on the config settings
     std::string timeStamp = dateFunc(year, month, day);
@@ -52,6 +57,20 @@ std::string monthNumToName(const uint8_t monthNum) {
     return months[monthNum - 1]; // Subtract one because the index of months array starts at 0
 }
 
+void padWithZeros(std::string& number, const size_t targetSize) {
+    // If target size is 1, then no zeros need to be added, so just return. Same for empty numbers.
+    if (number.empty() || targetSize < 2) {
+        return;
+    }
+    if (number.size() == targetSize) {
+        return;
+    }
+
+    const size_t amountOfZeros = targetSize - number.size();
+    const std::string zeros(amountOfZeros, '0');
+    number = zeros + number;
+}
+
 std::function<std::string(const int)> monthFunc = nullptr;
 
 std::function<std::string(const std::string, const std::string, const std::string)> dateFunc = nullptr;
@@ -62,7 +81,6 @@ void updateMonthFunc() {
         monthFunc = [] (const int monthNum) {
             std::string month;
             month = std::to_string(monthNum);
-            month = (monthNum < 10 ? "0" : "") + month; // Add a 0 to the beginning of any single-digit months to make it 2 digits.
             return month;
         };
     }
