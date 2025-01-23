@@ -1,6 +1,6 @@
 # RK Logger
 
-Implementation of a logger in C++. It uses a ```std::queue<std::string>``` to hold log messages. It will continuously check the queue in a loop for new messages and print them when found. If there are no messages, it'll wait until messages are added before proceeding again. Allows logging from multiple files to one central log queue. It will print the time, the thread id, and the function from where the logs were created. The timestamp can be modified to different formats. See the "demonstration" directory for example usage and the section below for example output.
+Implementation of a logger in C++. It uses a ```std::queue<std::string>``` to hold log messages. It will continuously check the queue in a loop for new messages and print them when found. If there are no messages, it'll wait until messages are added before proceeding again. Allows logging from multiple files to one central log queue. It will print the time, the thread id, and the function from where the logs were created. The timestamp can be modified to different formats. It will also write the logs to a log file. See the "demonstration" directory for example usage and the section below for example output.
 
 ## Example output
 ```
