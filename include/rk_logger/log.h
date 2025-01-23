@@ -75,11 +75,11 @@ void stopLogger(std::thread);
  */
 template<typename... Args>
 void logMessage(const rk::time::time_point time, const std::string funcName, const Args&... args) {
+    std::lock_guard<std::mutex> lock(logQueueMutex);
     std::ostringstream oss;
     oss << rk::time::generateTimeStamp(time); // Prefix the time stamp
     oss << "[" << std::this_thread::get_id() << "][" << funcName << "]"; // Prefix the thread id and function name
     (oss << ... << args);
-    std::lock_guard<std::mutex> lock(logQueueMutex);
     logQueue.push(oss.str());
     cv.notify_one();
 }
