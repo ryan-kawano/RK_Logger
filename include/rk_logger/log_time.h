@@ -80,17 +80,17 @@ extern std::function<std::string(const int)> monthFunc;
 extern std::function<std::string(const std::string, const std::string, const std::string)> dateFunc;
 
 /**
- * @brief Updates the month function at runtime.
+ * @brief Updates the month function. This function does not "update the month", but rather updates the function that formats the month.
  */
 void updateMonthFunc();
 
 /**
- * @brief Updates the date function at runtime.
+ * @brief Updates the date function. This function does not "update the date", but rather updates the function that formats the date.
  */
 void updateDateFunc();
 
 /**
- * @brief Calls all function updater functions to update functions at runtime.
+ * @brief Calls all function updater functions to update functions.
  */
 void updateTimeStampFuncs();
 
