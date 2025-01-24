@@ -11,13 +11,20 @@ std::mutex logQueueMutex;
 std::queue<std::string> logQueue;
 std::mutex endLoopMtx;
 bool endLoop;
-std::ofstream logFile("logs.txt");
+std::ofstream logFile;
 std::condition_variable cv;
 
 std::thread startLogger(const std::filesystem::path& configPath) {
     // Read config settings from a file (if it exists) and update the internal config
     rk::config::getLoggingConfig(configPath);
     rk::time::updateTimeStampFuncs();
+
+    // Create a log file with a time stamp
+    std::string timeStamp = rk::time::generateTimeStamp(rk::time::system_clock::now());
+    timeStamp = rk::time::convertTimeStampForFileName(timeStamp);
+    const std::string logFileName = std::string("logs_") + timeStamp + ".txt";
+    std::cout << "Writing to log file: " << logFileName << std::endl;
+    logFile.open(logFileName);
 
     std::thread logThread = startLogThread();
     LOG_VERIFY
