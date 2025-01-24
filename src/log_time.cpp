@@ -10,10 +10,16 @@
 namespace rk {
 namespace time {
 
+std::mutex tmMutex;
+
 std::string generateTimeStamp(time_point time_point) {
     // Convert time to other type for easier access to sub-units
     std::time_t time_t = system_clock::to_time_t(time_point);
-    std::tm tm_local = *std::localtime(&time_t);
+    std::tm tm_local;
+    {
+        std::lock_guard<std::mutex> lock(tmMutex);
+        tm_local = *std::localtime(&time_t);
+    }
 
     std::string year = std::to_string(tm_local.tm_year + 1900); // tm_year starts from 1900
     std::string day = std::to_string(tm_local.tm_mday);
@@ -69,6 +75,33 @@ void padWithZeros(std::string& number, const size_t targetSize) {
     const size_t amountOfZeros = targetSize - number.size();
     const std::string zeros(amountOfZeros, '0');
     number = zeros + number;
+}
+
+std::string convertTimeStampForFileName(const std::string timeStamp) {
+    std::string timeStampForFileName = timeStamp;
+
+    // Remove any square brackets
+    size_t squareBracketIdx = timeStampForFileName.find_first_of("[]");
+    while (squareBracketIdx != std::string::npos) {
+        timeStampForFileName.replace(squareBracketIdx, 1, "");
+        squareBracketIdx = timeStampForFileName.find_first_of("[]");
+    }
+
+    // Replace any vertical lines with underscores
+    size_t verticalLineIdx = timeStampForFileName.find_first_of("|");
+    while (verticalLineIdx != std::string::npos) {
+        timeStampForFileName.replace(verticalLineIdx, 1, "_");
+        verticalLineIdx = timeStampForFileName.find_first_of("|");
+    }
+
+    // Replace any colons with dashes
+    size_t colonIndex = timeStampForFileName.find_first_of(":");
+    while (colonIndex != std::string::npos) {
+        timeStampForFileName.replace(colonIndex, 1, "-");
+        colonIndex = timeStampForFileName.find_first_of(":");
+    }
+
+    return timeStampForFileName;
 }
 
 std::function<std::string(const int)> monthFunc = nullptr;

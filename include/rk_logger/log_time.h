@@ -8,12 +8,15 @@
 #include <chrono>
 #include <string>
 #include <functional>
+#include <mutex>
 
 namespace rk {
 namespace time {
 
 typedef std::chrono::system_clock system_clock;
 typedef std::chrono::system_clock::time_point time_point;
+
+extern std::mutex tmMutex;
 
 constexpr const char* months[12] = {
     "Jan",
@@ -56,6 +59,16 @@ std::string monthNumToName(const uint8_t);
  * @param size_t The target size to change it to.
  */
 void padWithZeros(std::string&, const size_t);
+
+/**
+ * @brief Converts a time stamp in order to use it in a file name.
+ * 
+ * It will remove any characters that are not allowed in a file name and format it for readability. Meant to be used with the output from the time stamp function.
+ * 
+ * @param std::string The time stamp to convert.
+ * @return The converted time stamp.
+ */
+std::string convertTimeStampForFileName(const std::string);
 
 /**
  * @brief Converts a month to the format specified by the config.
