@@ -1,4 +1,4 @@
 *.exe
-*.txt
+logs_*.txt
 build
 .vscode/settings.json
