@@ -14,7 +14,7 @@
                 "-I",
                 "${workspaceFolder}/src/demonstration",
                 "-o",
-                "${workspaceFolder}/src/demonstration/main.exe"
+                "${workspaceFolder}/src/demonstration/rk_logger_demonstration.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"

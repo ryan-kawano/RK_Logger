@@ -3,6 +3,7 @@
  * @brief Source file for code related to time for logs.
  */
 #include <iomanip>
+#include <iostream>
 
 #include "rk_logger/log_time.h"
 #include "rk_logger/log_config.h"
@@ -36,9 +37,15 @@ std::string generateTimeStamp(time_point time_point) {
     month = monthFunc(tm_local.tm_mon + 1); // Add 1 because std::tm's months start at 0
     padWithZeros(month, 2);
 
-    // Need to calculate milliseconds from nanoseconds
-    auto seconds_time_point = std::chrono::duration_cast<std::chrono::seconds>(time_point.time_since_epoch());
-    std::string milliseconds = std::to_string((time_point.time_since_epoch().count() - std::chrono::duration_cast<std::chrono::nanoseconds>(seconds_time_point).count()) / static_cast<int>(1e6));
+    /**
+     * Need to calculate milliseconds. Convert the current time to seconds in order to lose precision and lose
+     * the fractional portion. Then, subtract that number from the current time milliseconds and the difference
+     * should be the milliseconds portion of the current time.
+     */
+    auto time_point_as_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_point.time_since_epoch()).count();
+    auto time_point_as_s = std::chrono::duration_cast<std::chrono::seconds>(time_point.time_since_epoch()).count();
+    auto diff = time_point_as_ms - (time_point_as_s * static_cast<uint64_t>(1e3)); // Need to multiply seconds by 1e3 in order to get milliseconds
+    std::string milliseconds = std::to_string(diff);
     padWithZeros(milliseconds, 3);
 
     // Format date based on the config settings
@@ -109,6 +116,7 @@ std::function<std::string(const int)> monthFunc = nullptr;
 std::function<std::string(const std::string, const std::string, const std::string)> dateFunc = nullptr;
 
 void updateMonthFunc() {
+    std::cout << "Updating month function\n";
     const rk::config::ActualValue monthFormat = std::get<1>(rk::config::configMap.at("month_format"));
     if (monthFormat == std::get<0>(rk::config::configMap.at("month_format")).at("MONTH_NUM")) {
         monthFunc = [] (const int monthNum) {
@@ -127,6 +135,7 @@ void updateMonthFunc() {
 }
 
 void updateDateFunc() {
+    std::cout << "Updating date function\n";
     const rk::config::ActualValue dateFormat = std::get<1>(rk::config::configMap.at("date_format"));
     if (dateFormat == std::get<0>(rk::config::configMap.at("date_format")).at("MM_DD_YYYY")) {
         dateFunc = [](const std::string year, const std::string month, const std::string day) {
@@ -170,6 +179,7 @@ void updateDateFunc() {
 }
 
 void updateTimeStampFuncs() {
+    std::cout << "Updating time stamp functions\n";
     updateMonthFunc();
     updateDateFunc();
 }

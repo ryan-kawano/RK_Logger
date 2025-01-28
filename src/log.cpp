@@ -19,7 +19,6 @@ std::thread startLogger(const std::filesystem::path& configPath) {
     rk::config::getLoggingConfig(configPath);
     rk::time::updateTimeStampFuncs();
 
-    // Create a log file with a time stamp
     std::string timeStamp = rk::time::generateTimeStamp(rk::time::system_clock::now());
     timeStamp = rk::time::convertTimeStampForFileName(timeStamp);
     const std::string logFileName = std::string("logs_") + timeStamp + ".txt";
