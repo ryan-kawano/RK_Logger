@@ -10,15 +10,17 @@
 namespace rk {
 namespace config {
 
+// The values are explicitly casted to uint8_t in order to supress compiler warnings
 PossibleValuesMap dateFormatPossibleValues = {
-    { "MM_DD_YYYY", 0u }, // i.e., Feb 4, 2025 is formatted as [02|Feb]-04-2025
-    { "DD_MM_YYYY", 1u }, // i.e., Feb 4, 2025 is formatted as 04-[02|Feb]-2025
-    { "YYYY_MM_DD", 2u } // i.e., Feb 4, 2025 is formatted as 2025-[02|Feb]-04
+    { "MM_DD_YYYY", static_cast<uint8_t>(0u) }, // i.e., Feb 4, 2025 is formatted as [02|Feb]-04-2025
+    { "DD_MM_YYYY", static_cast<uint8_t>(1u) }, // i.e., Feb 4, 2025 is formatted as 04-[02|Feb]-2025
+    { "YYYY_MM_DD", static_cast<uint8_t>(2u) } // i.e., Feb 4, 2025 is formatted as 2025-[02|Feb]-04
 };
 
+// The values are explicitly casted to uint8_t in order to supress compiler warnings
 PossibleValuesMap monthFormatPossibleValues = {
-    { "MONTH_NUM", 0u }, // Prints the months name, e.g., Jan, Feb, etc.
-    { "MONTH_NAME", 1u } // Prints the month's number, e.g., 01, 02, etc.
+    { "MONTH_NUM", static_cast<uint8_t>(0u) }, // Prints the months name, e.g., Jan, Feb, etc.
+    { "MONTH_NAME", static_cast<uint8_t>(1u) } // Prints the month's number, e.g., 01, 02, etc.
 };
 
 ConfigMap configMap = {

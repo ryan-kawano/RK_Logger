@@ -45,15 +45,15 @@ int main() {
     // Generate some random events
     std::random_device rd;
     std::mt19937 gen(rd());
-    size_t randomDuration;
+    double randomDuration;
     constexpr size_t MAX_RANDOM_EVENTS = 15;
     size_t randomEventsCount = 0;
-    std::thread randomEvents([&gen, &randomDuration, &randomEventsCount] () {
+    std::thread randomEvents([&gen, &randomDuration, &randomEventsCount, &MAX_RANDOM_EVENTS] () {
         while (randomEventsCount < MAX_RANDOM_EVENTS) {
-            std::uniform_int_distribution<> dist(0, 5);
+            std::uniform_real_distribution<> dist(0, 5);
             randomDuration = dist(gen);
             RK_LOG("Random event happened. Printing a log for it. Random events remaining: ", MAX_RANDOM_EVENTS - randomEventsCount, "\n");
-            std::this_thread::sleep_for(std::chrono::seconds(randomDuration));
+            std::this_thread::sleep_for(std::chrono::duration<double>(randomDuration));
             randomEventsCount++;
         }
     });

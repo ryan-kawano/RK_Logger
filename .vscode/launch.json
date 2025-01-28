@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "preLaunchTask": "C/C++: g++.exe build active file",
-            "program": "${workspaceFolder}/src/demonstration/main.exe",
+            "program": "${workspaceFolder}/src/demonstration/rk_logger_demonstration.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/src/demonstration",
