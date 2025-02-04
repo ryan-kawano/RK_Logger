@@ -2,7 +2,7 @@
  * @file log.cpp
  * @brief The implementation file for the logger.
  */
-#include "rk_logger/log.h"
+#include "rk_logger/logger.h"
 
 namespace rk {
 namespace log {
