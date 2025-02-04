@@ -5,7 +5,7 @@
 #include <thread>
 #include <random>
 
-#include "rk_logger/log.h"
+#include "rk_logger/logger.h"
 #include "file1.h"
 
 int main() {
