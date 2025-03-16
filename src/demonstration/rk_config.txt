@@ -1,6 +1,6 @@
 /**
- * This file contains settings that will modify the behavior of the logger. This file is optional. If the default settings are desired,
- * simply leave this file unmodified or simply delete it.
+ * This file contains settings that will modify the behavior of the logger. The logger will read the settings from this file during runtime.
+ * This file is optional. If the logger cannot find this file, it will use the default settings.
  */
 
 /**
