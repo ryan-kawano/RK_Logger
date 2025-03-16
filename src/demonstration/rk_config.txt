@@ -28,4 +28,4 @@ month_format=MONTH_NUM
  * 12 e.g., 8:30PM becomes "08:30:00.000 PM"
  * 24 e.g., 8:30PM becomes "20:30:00.000"
  */
-time_format=24
+time_format=12

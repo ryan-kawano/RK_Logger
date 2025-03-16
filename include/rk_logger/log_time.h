@@ -111,7 +111,7 @@ extern std::function<std::string(std::string, const std::string, const std::stri
 void updateMonthFunc();
 
 /**
- * @brief Updates the date function. This function does not "update the date", but rather updates the function that formats the date.
+ * @brief Updates the date function. This function itself does not "update the date", but rather updates the function that formats the date.
  */
 void updateDateFunc();
 
