@@ -16,7 +16,7 @@ namespace time {
 typedef std::chrono::system_clock system_clock;
 typedef std::chrono::system_clock::time_point time_point;
 
-extern std::mutex tmMutex;
+extern std::mutex tmMutex; /**< tm meaning std::tm */
 
 constexpr const char* months[12] = {
     "Jan",
@@ -93,17 +93,35 @@ extern std::function<std::string(const int)> monthFunc;
 extern std::function<std::string(const std::string, const std::string, const std::string)> dateFunc;
 
 /**
+ * @brief Generates a formatted time that is specified by the config, with the given sub-units.
+ * 
+ * This function is determined at runtime. The sub-units should be in the same format as std::tm, i.e., hour is 0-23 hours since midnight, etc.
+ * 
+ * @param std::string The hour.
+ * @param std::string The minute.
+ * @param std::string The second.
+ * @param std::string The millisecond.
+ * @return The formatted time.
+ */
+extern std::function<std::string(std::string, const std::string, const std::string, const std::string)> timeFunc;
+
+/**
  * @brief Updates the month function. This function does not "update the month", but rather updates the function that formats the month.
  */
 void updateMonthFunc();
 
 /**
- * @brief Updates the date function. This function does not "update the date", but rather updates the function that formats the date.
+ * @brief Updates the date function. This function itself does not "update the date", but rather updates the function that formats the date.
  */
 void updateDateFunc();
 
 /**
- * @brief Calls all function updater functions to update functions.
+ * @brief Updates the time function. This function itself does not "update the time", but rather updates the function that formats the time.
+ */
+void updateTimeFunc();
+
+/**
+ * @brief Calls all the function updater functions.
  */
 void updateTimeStampFuncs();
 

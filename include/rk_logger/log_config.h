@@ -19,6 +19,7 @@ const inline std::string CONFIG_FILE_NAME = "rk_config.txt";
 using PossibleValuesMap = const std::unordered_map<std::string, uint8_t>;
 extern PossibleValuesMap dateFormatPossibleValues;
 extern PossibleValuesMap monthFormatPossibleValues;
+extern PossibleValuesMap timeFormatPossibleValues;
 
 using ActualValue = uint8_t; /**< The type of value that will be used for the Config setting */
 using ConfigMap = std::unordered_map<std::string, std::tuple<PossibleValuesMap, ActualValue>>;

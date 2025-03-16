@@ -23,9 +23,16 @@ PossibleValuesMap monthFormatPossibleValues = {
     { "MONTH_NAME", static_cast<uint8_t>(1u) } // Prints the month's number, e.g., 01, 02, etc.
 };
 
+// The values are explicitly casted to uint8_t in order to supress compiler warnings
+PossibleValuesMap timeFormatPossibleValues = {
+    { "12", static_cast<uint8_t>(0u) }, // Uses 12-hour clock format, e.g., 8:30PM becomes "08:30:00.000 PM"
+    { "24", static_cast<uint8_t>(1u) } // Uses 24-hour clock format, e.g., 8:30PM becomes "20:30:00.000"
+};
+
 ConfigMap configMap = {
     { "date_format", std::make_tuple(dateFormatPossibleValues, dateFormatPossibleValues.at("MM_DD_YYYY")) },
-    { "month_format", std::make_tuple(monthFormatPossibleValues, monthFormatPossibleValues.at("MONTH_NUM")) }
+    { "month_format", std::make_tuple(monthFormatPossibleValues, monthFormatPossibleValues.at("MONTH_NUM")) },
+    { "time_format", std::make_tuple(timeFormatPossibleValues, timeFormatPossibleValues.at("12")) },
 };
 
 void getLoggingConfig(const std::filesystem::path& path) {
@@ -78,16 +85,16 @@ void getLoggingConfig(const std::filesystem::path& path) {
             configValueStr = configValueStr.substr(0, configValueStr.size());
         }
 
-        // Check if the user-provided value is a valid logger value
+        // Check if the user-provided value is a valid config value
         const PossibleValuesMap& valuesMap = std::get<0>(configKeyIter->second);
         auto configValueIter = valuesMap.find(configValueStr);
         if (configValueIter == valuesMap.end()) {
-            std::cout << "Value \"" << configValueStr << "\" for key was not valid. Skipping" << std::endl;
+            std::cout << "Value \"" << configValueStr << "\" for key \"" << configKey << "\" was not valid. Skipping" << std::endl;
             continue;
         }
 
         const ActualValue configValue = configValueIter->second;
-        std::cout << "Updating config with " << configValueStr << " (numerical value: " << std::to_string(configValue) << ")" << std::endl;
+        std::cout << "Updating config key \"" << configKey << "\" with value \"" << configValueStr << "\"" << std::endl;
         rk::config::updateConfigValue(configKeyIter, configValue);
     }
 }
