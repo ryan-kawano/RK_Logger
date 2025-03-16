@@ -5,20 +5,27 @@
 
 /**
  * Set the format of the date that will be prefixed to each log message. Choose one of the options below and set it to the date_format value.
- * If the default value is desired, simply do not change the value.
  * 
- * MM_DD_YYYY i.e. Feb 4, 2025 is formatted as [02|Feb]-04-2025
- * DD_MM_YYYY i.e. Feb 4, 2025 is formatted as 04-[02|Feb]-2025
- * YYYY_MM_DD i.e. Feb 4, 2025 is formatted as 2025-[02|Feb]-04
+ * MM_DD_YYYY i.e., Feb 4, 2025 is formatted as [02|Feb]-04-2025
+ * DD_MM_YYYY i.e., Feb 4, 2025 is formatted as 04-[02|Feb]-2025
+ * YYYY_MM_DD i.e., Feb 4, 2025 is formatted as 2025-[02|Feb]-04
  */
 date_format=MM_DD_YYYY
 
 /**
  * Set the format of the month that will be printed in the date that is prefixed to each log message. 
- * Choose one of th options below and set it to the month_format value.
- * If the default value is desired, simply do not change the value.
+ * Choose one of the options below and set it to the month_format value.
  * 
- * MONTH_NUM e.g. month as a number, e.g., Jan, Feb, etc.
- * MONTH_NAME e.g. month as a name, e.g., 01, 02, etc.
+ * MONTH_NUM i.e., month as a number, e.g., Jan, Feb, etc.
+ * MONTH_NAME i.e., month as a name, e.g., 01, 02, etc.
  */
 month_format=MONTH_NUM
+
+/**
+ * Set the time format to be either 12-hour or 24-hour format. Choose one of the options below and set it
+ * to the time_format value.
+ *
+ * 12 e.g., 8:30PM becomes "08:30:00.000 PM"
+ * 24 e.g., 8:30PM becomes "20:30:00.000"
+ */
+time_format=24

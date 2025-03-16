@@ -48,17 +48,12 @@ std::string generateTimeStamp(time_point time_point) {
     std::string milliseconds = std::to_string(diff);
     padWithZeros(milliseconds, 3);
 
-    // Format date based on the config settings
-    std::string timeStamp = dateFunc(year, month, day);
+    // Format date and time based on the config settings
+    std::string date = dateFunc(year, month, day);
+    std::string time = timeFunc(hour, minute, second, milliseconds);
 
-    timeStamp = timeStamp + hour +
-                            ":" +
-                            minute +
-                            ":" +
-                            second +
-                            "." +
-                            milliseconds +
-                            "]";
+    const std::string timeStamp = date + time;
+
     return timeStamp;
 }
 
@@ -114,6 +109,8 @@ std::string convertTimeStampForFileName(const std::string timeStamp) {
 std::function<std::string(const int)> monthFunc = nullptr;
 
 std::function<std::string(const std::string, const std::string, const std::string)> dateFunc = nullptr;
+
+std::function<std::string(std::string, const std::string, const std::string, const std::string)> timeFunc = nullptr;
 
 void updateMonthFunc() {
     std::cout << "Updating month function\n";
@@ -178,10 +175,43 @@ void updateDateFunc() {
     }
 }
 
+void updateTimeFunc() {
+    std::cout << "Updating time function\n";
+    const rk::config::ActualValue timeFormat = std::get<1>(rk::config::configMap.at("time_format"));
+    if (timeFormat == std::get<0>(rk::config::configMap.at("time_format")).at("12")) {
+        timeFunc = [] (std::string hour, const std::string minute, const std::string second, const std::string millisecond) {
+            int hourNum = std::stoi(hour);
+            const bool isPM = (hourNum >= 12) ? true : false;
+
+            if (isPM && hourNum != 12) {
+                hour = std::to_string(hourNum - 12);
+                padWithZeros(hour, 2);
+            }
+
+            std::string time = hour + ":" + minute + ":" + second + "." + millisecond;
+            if (isPM) {
+                time = time + " PM";
+            }
+            else {
+                time = time + " AM";
+            }
+            time = time + "]";
+
+            return time;
+        };
+    }
+    else if(timeFormat == std::get<0>(rk::config::configMap.at("time_format")).at("24")) {
+        timeFunc = [] (std::string hour, const std::string minute, const std::string second, const std::string millisecond) {
+            return hour + ":" + minute + ":" + second + "." + millisecond + "]";
+        };
+    }
+}
+
 void updateTimeStampFuncs() {
     std::cout << "Updating time stamp functions\n";
     updateMonthFunc();
     updateDateFunc();
+    updateTimeFunc();
 }
 
 } // namespace time
