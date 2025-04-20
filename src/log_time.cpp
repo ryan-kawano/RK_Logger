@@ -39,7 +39,7 @@ std::string generateTimeStamp(time_point time_point) {
 
     /**
      * Need to calculate milliseconds. Convert the current time to seconds in order to lose precision and lose
-     * the fractional portion. Then, subtract that number from the current time milliseconds and the difference
+     * the fractional portion. Then, subtract that number from the current time in milliseconds and the difference
      * should be the milliseconds portion of the current time.
      */
     auto time_point_as_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_point.time_since_epoch()).count();
