@@ -51,7 +51,7 @@ void getLoggingConfig(const std::filesystem::path& path) {
     std::cout << "Trying to open RK Logger config file at path " << path << "" << std::endl;
     std::ifstream configFile(path);
     if (!configFile) {
-        std::cout << "Could not open RK Logger config file. Either one wasn't provided or the path provided was wrong. Using default RK Logger config" << std::endl;
+        std::cout << "Could not open RK Logger config file. Either one wasn't provided or the path provided was invalid. Using default RK Logger config" << std::endl;
         return;
     }
     else {

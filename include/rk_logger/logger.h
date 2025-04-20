@@ -1,6 +1,6 @@
 /**
  * @file log.h
- * @brief The header file for the logger.
+ * @brief Header for the logger.
  * 
  * This file contains functions, macros, and variables that are used by the logger. See the demonstration directory
  * for an example of its use. Also, see the README for an overview.
@@ -46,7 +46,7 @@ namespace log {
 extern std::mutex logQueueMutex; 
 extern std::queue<std::string> logQueue; /**< Main queue for holding log messages */ 
 extern std::mutex endLoopMtx;
-extern bool endLoop; /**< Determines whether or not to end the log loop */ 
+extern bool endLogLoop;
 extern std::ofstream logFile;
 extern std::condition_variable cv;
 
@@ -68,7 +68,7 @@ void stopLogger(std::thread);
 /**
  * @brief Adds a message to the log queue.
  * 
- * This function should not be called by itself. Call it via the LOG macro.
+ * This function should not be called by itself. Call it via the RK_LOG macro.
  * 
  * @param time The time that the message was logged.
  * @param funcName The function that this is being called from.
