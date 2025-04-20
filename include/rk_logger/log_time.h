@@ -34,14 +34,14 @@ constexpr const char* months[12] = {
 };
 
 /**
- * @brief Generates a time-stamp from a time_point.
+ * @brief Generates a timestamp from a time_point.
  * 
  * @param time_point The time_point to convert.
  */
 std::string generateTimeStamp(time_point);
 
 /**
- * @brief Converts a month number to the english name.
+ * @brief Converts a month number to the abbreviated English name.
  * 
  * It starts at 1 and goes up, so January = 1, February = 2, etc.
  * 
@@ -53,12 +53,10 @@ std::string monthNumToName(const uint8_t);
 /**
  * @brief Adds zeros to the beginning of a number to make it have a specific number of characters.
  * 
- * This is meant for keeping the time stamps uniform in size.
- * 
  * @param std::string The number to modify.
- * @param size_t The target size to change it to.
+ * @param int The target size to change it to.
  */
-void padWithZeros(std::string&, const size_t);
+void padWithZeros(std::string&, const int);
 
 /**
  * @brief Converts a time stamp in order to use it in a file name.
@@ -106,7 +104,7 @@ extern std::function<std::string(const std::string, const std::string, const std
 extern std::function<std::string(std::string, const std::string, const std::string, const std::string)> timeFunc;
 
 /**
- * @brief Updates the month function. This function does not "update the month", but rather updates the function that formats the month.
+ * @brief Updates the month function. This function itself does not "update the month", but rather updates the function that formats the month.
  */
 void updateMonthFunc();
 

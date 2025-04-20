@@ -65,7 +65,7 @@ std::string monthNumToName(const uint8_t monthNum) {
     return months[monthNum - 1]; // Subtract one because the index of months array starts at 0
 }
 
-void padWithZeros(std::string& number, const size_t targetSize) {
+void padWithZeros(std::string& number, const int targetSize) {
     // If target size is 1, then no zeros need to be added, so just return. Same for empty numbers.
     if (number.empty() || targetSize < 2) {
         return;
@@ -208,7 +208,7 @@ void updateTimeFunc() {
 }
 
 void updateTimeStampFuncs() {
-    std::cout << "Updating time stamp functions\n";
+    std::cout << "Updating timestamp functions\n";
     updateMonthFunc();
     updateDateFunc();
     updateTimeFunc();
