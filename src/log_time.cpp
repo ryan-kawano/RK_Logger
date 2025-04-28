@@ -39,7 +39,7 @@ std::string generateTimeStamp(time_point time_point) {
 
     /**
      * Need to calculate milliseconds. Convert the current time to seconds in order to lose precision and lose
-     * the fractional portion. Then, subtract that number from the current time milliseconds and the difference
+     * the fractional portion. Then, subtract that number from the current time in milliseconds and the difference
      * should be the milliseconds portion of the current time.
      */
     auto time_point_as_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_point.time_since_epoch()).count();
@@ -65,7 +65,7 @@ std::string monthNumToName(const uint8_t monthNum) {
     return months[monthNum - 1]; // Subtract one because the index of months array starts at 0
 }
 
-void padWithZeros(std::string& number, const size_t targetSize) {
+void padWithZeros(std::string& number, const int targetSize) {
     // If target size is 1, then no zeros need to be added, so just return. Same for empty numbers.
     if (number.empty() || targetSize < 2) {
         return;
