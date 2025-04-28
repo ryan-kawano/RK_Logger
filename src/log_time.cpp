@@ -114,15 +114,15 @@ std::function<std::string(std::string, const std::string, const std::string, con
 
 void updateMonthFunc() {
     std::cout << "Updating month function\n";
-    const rk::config::ActualValue monthFormat = std::get<1>(rk::config::configMap.at("month_format"));
-    if (monthFormat == std::get<0>(rk::config::configMap.at("month_format")).at("MONTH_NUM")) {
+    const rk::config::ActualValue monthFormat = std::get<1>(rk::config::configuration.at("month_format"));
+    if (monthFormat == std::get<0>(rk::config::configuration.at("month_format")).at("MONTH_NUM")) {
         monthFunc = [] (const int monthNum) {
             std::string month;
             month = std::to_string(monthNum);
             return month;
         };
     }
-    else if(monthFormat == std::get<0>(rk::config::configMap.at("month_format")).at("MONTH_NAME")) {
+    else if(monthFormat == std::get<0>(rk::config::configuration.at("month_format")).at("MONTH_NAME")) {
         monthFunc = [] (const int monthNum) {
             std::string month;
             month = monthNumToName(monthNum);
@@ -133,8 +133,8 @@ void updateMonthFunc() {
 
 void updateDateFunc() {
     std::cout << "Updating date function\n";
-    const rk::config::ActualValue dateFormat = std::get<1>(rk::config::configMap.at("date_format"));
-    if (dateFormat == std::get<0>(rk::config::configMap.at("date_format")).at("MM_DD_YYYY")) {
+    const rk::config::ActualValue dateFormat = std::get<1>(rk::config::configuration.at("date_format"));
+    if (dateFormat == std::get<0>(rk::config::configuration.at("date_format")).at("MM_DD_YYYY")) {
         dateFunc = [](const std::string year, const std::string month, const std::string day) {
             std::string timeStamp;
             timeStamp = "[" +
@@ -147,7 +147,7 @@ void updateDateFunc() {
             return timeStamp;
         };
     }
-    else if (dateFormat == std::get<0>(rk::config::configMap.at("date_format")).at("DD_MM_YYYY")) {
+    else if (dateFormat == std::get<0>(rk::config::configuration.at("date_format")).at("DD_MM_YYYY")) {
         dateFunc = [](const std::string year, const std::string month, const std::string day) {
             std::string timeStamp;
             timeStamp = "[" +
@@ -160,7 +160,7 @@ void updateDateFunc() {
             return timeStamp;
         };
     }
-    else if (dateFormat == std::get<0>(rk::config::configMap.at("date_format")).at("YYYY_MM_DD")) {
+    else if (dateFormat == std::get<0>(rk::config::configuration.at("date_format")).at("YYYY_MM_DD")) {
         dateFunc = [](const std::string year, const std::string month, const std::string day) {
             std::string timeStamp;
             timeStamp = "[" +
@@ -177,8 +177,8 @@ void updateDateFunc() {
 
 void updateTimeFunc() {
     std::cout << "Updating time function\n";
-    const rk::config::ActualValue timeFormat = std::get<1>(rk::config::configMap.at("time_format"));
-    if (timeFormat == std::get<0>(rk::config::configMap.at("time_format")).at("12")) {
+    const rk::config::ActualValue timeFormat = std::get<1>(rk::config::configuration.at("time_format"));
+    if (timeFormat == std::get<0>(rk::config::configuration.at("time_format")).at("12")) {
         timeFunc = [] (std::string hour, const std::string minute, const std::string second, const std::string millisecond) {
             int hourNum = std::stoi(hour);
             const bool isPM = (hourNum >= 12) ? true : false;
@@ -200,7 +200,7 @@ void updateTimeFunc() {
             return time;
         };
     }
-    else if(timeFormat == std::get<0>(rk::config::configMap.at("time_format")).at("24")) {
+    else if(timeFormat == std::get<0>(rk::config::configuration.at("time_format")).at("24")) {
         timeFunc = [] (std::string hour, const std::string minute, const std::string second, const std::string millisecond) {
             return hour + ":" + minute + ":" + second + "." + millisecond + "]";
         };
@@ -208,7 +208,7 @@ void updateTimeFunc() {
 }
 
 void updateTimeStampFuncs() {
-    std::cout << "Updating time stamp functions\n";
+    std::cout << "Updating timestamp functions\n";
     updateMonthFunc();
     updateDateFunc();
     updateTimeFunc();

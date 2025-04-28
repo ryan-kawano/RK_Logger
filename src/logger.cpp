@@ -19,11 +19,9 @@ std::thread startLogger(const std::filesystem::path& configPath) {
     rk::config::getLoggingConfig(configPath);
     rk::time::updateTimeStampFuncs();
 
-    std::string timeStamp = rk::time::generateTimeStamp(rk::time::system_clock::now());
-    timeStamp = rk::time::convertTimeStampForFileName(timeStamp);
-    const std::string logFileName = std::string("logs_") + timeStamp + ".txt";
-    std::cout << "Writing to log file: " << logFileName << std::endl;
-    logFile.open(logFileName);
+    if (std::get<1>(rk::config::configuration.at(rk::config::configFileKeys::WRITE_TO_LOG_FILE)) == 1) {
+        openLogFile();
+    }
 
     std::thread logThread = startLogThread();
     LOG_VERIFY
@@ -33,7 +31,9 @@ std::thread startLogger(const std::filesystem::path& configPath) {
 
 void stopLogger(std::thread logThread) {
     endLogThread(std::move(logThread));
-    closeLogFile();
+    if (std::get<1>(rk::config::configuration.at(rk::config::configFileKeys::WRITE_TO_LOG_FILE)) == 1) {
+        closeLogFile();
+    }
 }
 
 /**
@@ -61,7 +61,9 @@ void logQueueLoop() {
             logQueue.pop();
             if (!msg.empty()){
                 std::cout << msg;
-                logFile << msg;
+                if (logFile) {
+                    logFile << msg;
+                }
                 msg.clear();
             }
         }
@@ -102,9 +104,14 @@ void endLogThread(std::thread thread) {
     }
 }
 
-/**
- * Closes the log file by using std::ofstream::close().
- */
+void openLogFile() {
+    std::string timeStamp = rk::time::generateTimeStamp(rk::time::system_clock::now());
+    timeStamp = rk::time::convertTimeStampForFileName(timeStamp);
+    const std::string logFileName = std::string("logs_") + timeStamp + ".txt";
+    std::cout << "Writing to log file: " << logFileName << std::endl;
+    logFile.open(logFileName);
+}
+
 void closeLogFile() {
     logFile.close();
 }

@@ -53,7 +53,7 @@ std::string monthNumToName(const uint8_t);
 /**
  * @brief Adds zeros to the beginning of a number to make it have a specific number of characters.
  * 
- * This is meant for keeping the time stamps uniform in size.
+ * This is meant for keeping the timestamps uniform in size.
  * 
  * @param std::string The number to modify.
  * @param size_t The target size to change it to.
@@ -61,12 +61,12 @@ std::string monthNumToName(const uint8_t);
 void padWithZeros(std::string&, const size_t);
 
 /**
- * @brief Converts a time stamp in order to use it in a file name.
+ * @brief Converts a timestamp in order to use it in a file name.
  * 
- * It will remove any characters that are not allowed in a file name and format it for readability. Meant to be used with the output from the time stamp function.
+ * It will remove any characters that are not allowed in a file name and format it for readability. Meant to be used with the output from the timestamp function.
  * 
- * @param std::string The time stamp to convert.
- * @return The converted time stamp.
+ * @param std::string The timestamp to convert.
+ * @return The converted timestamp.
  */
 std::string convertTimeStampForFileName(const std::string);
 

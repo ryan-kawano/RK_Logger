@@ -29,10 +29,16 @@ PossibleValuesMap timeFormatPossibleValues = {
     { "24", static_cast<uint8_t>(1u) } // Uses 24-hour clock format, e.g., 8:30PM becomes "20:30:00.000"
 };
 
-ConfigMap configMap = {
-    { "date_format", std::make_tuple(dateFormatPossibleValues, dateFormatPossibleValues.at("MM_DD_YYYY")) },
-    { "month_format", std::make_tuple(monthFormatPossibleValues, monthFormatPossibleValues.at("MONTH_NUM")) },
-    { "time_format", std::make_tuple(timeFormatPossibleValues, timeFormatPossibleValues.at("12")) },
+PossibleValuesMap writeToLogFilePossibleValues = {
+    { "disable", static_cast<uint8_t>(0) },
+    { "enable", static_cast<uint8_t>(1) }
+};
+
+ConfigMap configuration = {
+    { configFileKeys::DATE_FORMAT, std::make_tuple(dateFormatPossibleValues, dateFormatPossibleValues.at("MM_DD_YYYY")) },
+    { configFileKeys::MONTH_FORMAT, std::make_tuple(monthFormatPossibleValues, monthFormatPossibleValues.at("MONTH_NUM")) },
+    { configFileKeys::TIME_FORMAT, std::make_tuple(timeFormatPossibleValues, timeFormatPossibleValues.at("12")) },
+    { configFileKeys::WRITE_TO_LOG_FILE, std::make_tuple(writeToLogFilePossibleValues, writeToLogFilePossibleValues.at("enable")) },
 };
 
 void getLoggingConfig(const std::filesystem::path& path) {
@@ -71,8 +77,8 @@ void getLoggingConfig(const std::filesystem::path& path) {
         const std::string configKey = line.substr(0, equalsIndex);
 
         // Check if the user-provided key is a valid logger setting
-        auto configKeyIter = rk::config::configMap.find(configKey);
-        if (configKeyIter == rk::config::configMap.end()) {
+        auto configKeyIter = rk::config::configuration.find(configKey);
+        if (configKeyIter == rk::config::configuration.end()) {
             std::cout << "Key \"" << configKey << "\" was not valid. Skipping" << std::endl;
             continue;
         }
