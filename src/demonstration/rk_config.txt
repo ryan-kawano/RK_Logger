@@ -44,7 +44,7 @@ time_format=12
  * Enables or disables writing log output to a file.
  *
  * Possible values:
- * "enable"
- * "disable"
+ * "ENABLE"
+ * "DISABLE"
  */
-write_to_log_file=disable
+write_to_log_file=ENABLE

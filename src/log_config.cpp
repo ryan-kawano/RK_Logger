@@ -30,15 +30,15 @@ PossibleValuesMap timeFormatPossibleValues = {
 };
 
 PossibleValuesMap writeToLogFilePossibleValues = {
-    { "disable", static_cast<uint8_t>(0) },
-    { "enable", static_cast<uint8_t>(1) }
+    { "DISABLE", static_cast<uint8_t>(0) },
+    { "ENABLE", static_cast<uint8_t>(1) }
 };
 
 ConfigMap configuration = {
     { configFileKeys::DATE_FORMAT, std::make_tuple(dateFormatPossibleValues, dateFormatPossibleValues.at("MM_DD_YYYY")) },
     { configFileKeys::MONTH_FORMAT, std::make_tuple(monthFormatPossibleValues, monthFormatPossibleValues.at("MONTH_NUM")) },
     { configFileKeys::TIME_FORMAT, std::make_tuple(timeFormatPossibleValues, timeFormatPossibleValues.at("12")) },
-    { configFileKeys::WRITE_TO_LOG_FILE, std::make_tuple(writeToLogFilePossibleValues, writeToLogFilePossibleValues.at("enable")) },
+    { configFileKeys::WRITE_TO_LOG_FILE, std::make_tuple(writeToLogFilePossibleValues, writeToLogFilePossibleValues.at("ENABLE")) },
 };
 
 void getLoggingConfig(const std::filesystem::path& path) {
