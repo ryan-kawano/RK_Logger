@@ -45,10 +45,10 @@ std::string generateTimeStamp(time_point);
  * 
  * It starts at 1 and goes up, so January = 1, February = 2, etc.
  * 
- * @brief The month number.
+ * @param int The month number.
  * @return The month's name abbreviated to the first 3 letters, e.g., Jan, Feb, etc.
  */
-std::string monthNumToName(const uint8_t);
+std::string monthNumToName(const int);
 
 /**
  * @brief Adds zeros to the beginning of a number to make it have a specific number of characters.

@@ -16,7 +16,7 @@ namespace config {
 
 const inline std::string CONFIG_FILE_NAME = "rk_config.txt";
 
-using PossibleValuesMap = const std::unordered_map<std::string, uint8_t>;
+// Keys from the Config file
 namespace configFileKeys {
     const std::string DATE_FORMAT = "date_format";
     const std::string MONTH_FORMAT = "month_format";
@@ -24,13 +24,15 @@ namespace configFileKeys {
     const std::string WRITE_TO_LOG_FILE = "write_to_log_file";
 };
 
+using ConfigKey = std::string;
+using ConfigValue = int;
+using PossibleValuesMap = const std::unordered_map<ConfigKey, ConfigValue>;
 extern PossibleValuesMap dateFormatPossibleValues;
 extern PossibleValuesMap monthFormatPossibleValues;
 extern PossibleValuesMap timeFormatPossibleValues;
 extern PossibleValuesMap writeToLogFilePossibleValues;
 
-using ActualValue = uint8_t; /**< The type of value that will be used for the Config setting */
-using ConfigMap = std::unordered_map<std::string, std::tuple<PossibleValuesMap, ActualValue>>;
+using ConfigMap = std::unordered_map<std::string, std::tuple<PossibleValuesMap, ConfigValue>>;
 extern ConfigMap configuration; /**< Holds the current configuration */
 
 /**
@@ -49,7 +51,7 @@ void getLoggingConfig(const std::filesystem::path&);
  * @param ConfigMap::iterator An iterator to the key to be set.
  * @param std::string The value to set.
  */
-void updateConfigValue(const ConfigMap::iterator&, const ActualValue);
+void updateConfigValue(const ConfigMap::iterator&, const ConfigValue);
 
 } // namespace config
 } // namespace rk
