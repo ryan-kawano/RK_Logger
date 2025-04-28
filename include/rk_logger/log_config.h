@@ -17,13 +17,21 @@ namespace config {
 const inline std::string CONFIG_FILE_NAME = "rk_config.txt";
 
 using PossibleValuesMap = const std::unordered_map<std::string, uint8_t>;
+namespace configFileKeys {
+    const std::string DATE_FORMAT = "date_format";
+    const std::string MONTH_FORMAT = "month_format";
+    const std::string TIME_FORMAT = "time_format";
+    const std::string WRITE_TO_LOG_FILE = "write_to_log_file";
+};
+
 extern PossibleValuesMap dateFormatPossibleValues;
 extern PossibleValuesMap monthFormatPossibleValues;
 extern PossibleValuesMap timeFormatPossibleValues;
+extern PossibleValuesMap writeToLogFilePossibleValues;
 
 using ActualValue = uint8_t; /**< The type of value that will be used for the Config setting */
 using ConfigMap = std::unordered_map<std::string, std::tuple<PossibleValuesMap, ActualValue>>;
-extern ConfigMap configMap; /**< Holds the current configuration along with other config-related info */
+extern ConfigMap configuration; /**< Holds the current configuration */
 
 /**
  * @brief Parses the logging config file and updates the settings based on the contents.

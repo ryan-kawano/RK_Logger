@@ -59,12 +59,12 @@ std::string monthNumToName(const uint8_t);
 void padWithZeros(std::string&, const int);
 
 /**
- * @brief Converts a time stamp in order to use it in a file name.
+ * @brief Converts a timestamp in order to use it in a file name.
  * 
- * It will remove any characters that are not allowed in a file name and format it for readability. Meant to be used with the output from the time stamp function.
+ * It will remove any characters that are not allowed in a file name and format it for readability. Meant to be used with the output from the timestamp function.
  * 
- * @param std::string The time stamp to convert.
- * @return The converted time stamp.
+ * @param std::string The timestamp to convert.
+ * @return The converted timestamp.
  */
 std::string convertTimeStampForFileName(const std::string);
 

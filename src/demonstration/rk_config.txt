@@ -1,31 +1,50 @@
 /**
  * This file contains settings that will modify the behavior of the logger. The logger will read the settings from this file during runtime.
  * This file is optional. If the logger cannot find this file, it will use the default settings.
+ * Each setting has its own section. Below the commented sections, update the setting to the desired value.
  */
 
 /**
- * Set the format of the date that will be prefixed to each log message. Choose one of the options below and set it to the date_format value.
+ * DATE FORMAT
+ *
+ * Sets the format of the date that will be prefixed to each log message.
  * 
- * MM_DD_YYYY i.e., Feb 4, 2025 is formatted as [02|Feb]-04-2025
- * DD_MM_YYYY i.e., Feb 4, 2025 is formatted as 04-[02|Feb]-2025
- * YYYY_MM_DD i.e., Feb 4, 2025 is formatted as 2025-[02|Feb]-04
+ * Possible values:
+ * "MM_DD_YYYY" i.e., Feb 4, 2025 is formatted as [02|Feb]-04-2025
+ * "DD_MM_YYYY" i.e., Feb 4, 2025 is formatted as 04-[02|Feb]-2025
+ * "YYYY_MM_DD" i.e., Feb 4, 2025 is formatted as 2025-[02|Feb]-04
  */
 date_format=MM_DD_YYYY
 
 /**
- * Set the format of the month that will be printed in the date that is prefixed to each log message. 
- * Choose one of the options below and set it to the month_format value.
+ * MONTH FORMAT
+ *
+ * Sets the format of the month that will be printed in the date that is prefixed to each log message.
  * 
- * MONTH_NUM i.e., month as a number, e.g., Jan, Feb, etc.
- * MONTH_NAME i.e., month as a name, e.g., 01, 02, etc.
+ * Possible values:
+ * "MONTH_NUM" i.e., month as a number, e.g., Jan, Feb, etc.
+ * "MONTH_NAME" i.e., month as a name, e.g., 01, 02, etc.
  */
 month_format=MONTH_NUM
 
 /**
- * Set the time format to be either 12-hour or 24-hour format. Choose one of the options below and set it
- * to the time_format value.
+ * TIME FORMAT
+ * 
+ * Sets the time format to be either 12-hour or 24-hour format.
  *
- * 12 e.g., 8:30PM becomes "08:30:00.000 PM"
- * 24 e.g., 8:30PM becomes "20:30:00.000"
+ * Possible values:
+ * "12" e.g., 8:30PM becomes "08:30:00.000 PM"
+ * "24" e.g., 8:30PM becomes "20:30:00.000"
  */
 time_format=12
+
+/**
+ * WRITE TO LOG FILE
+ * 
+ * Enables or disables writing log output to a file.
+ *
+ * Possible values:
+ * "ENABLE"
+ * "DISABLE"
+ */
+write_to_log_file=ENABLE
