@@ -19,7 +19,7 @@ std::thread startLogger(const std::filesystem::path& configPath) {
     rk::config::getLoggingConfig(configPath);
     rk::time::updateTimeStampFuncs();
 
-    if (std::get<1>(rk::config::configuration.at(rk::config::configFileKeys::WRITE_TO_LOG_FILE)) == 1) {
+    if (rk::config::getConfigValueByKey(rk::config::configFileKeys::WRITE_TO_LOG_FILE)) {
         openLogFile();
     }
 
@@ -31,7 +31,7 @@ std::thread startLogger(const std::filesystem::path& configPath) {
 
 void stopLogger(std::thread logThread) {
     endLogThread(std::move(logThread));
-    if (std::get<1>(rk::config::configuration.at(rk::config::configFileKeys::WRITE_TO_LOG_FILE)) == 1) {
+    if (rk::config::getConfigValueByKey(rk::config::configFileKeys::WRITE_TO_LOG_FILE)) {
         closeLogFile();
     }
 }

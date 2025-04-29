@@ -33,6 +33,11 @@ extern PossibleValuesMap timeFormatPossibleValues;
 extern PossibleValuesMap writeToLogFilePossibleValues;
 
 using ConfigMap = std::unordered_map<std::string, std::tuple<PossibleValuesMap, ConfigValue>>;
+// Indices for the data that a key maps to
+namespace ConfigMapIndices {
+    constexpr int POSSIBLE_VALUES = 0;
+    constexpr int CONFIG_VALUE = 1;
+}
 extern ConfigMap configuration; /**< Holds the current configuration */
 
 /**
@@ -44,6 +49,14 @@ extern ConfigMap configuration; /**< Holds the current configuration */
  * Override it by providing a custom path.
  */
 void getLoggingConfig(const std::filesystem::path&);
+
+/**
+ * @brief Gets the current config's value for a given key.
+ * 
+ * @param std::string The key.
+ * @return The corresponding value.
+ */
+ConfigValue getConfigValueByKey(const std::string);
 
 /**
  * @brief Updates the config map with the values provided.

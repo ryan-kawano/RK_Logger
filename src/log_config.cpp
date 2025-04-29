@@ -47,7 +47,7 @@ void getLoggingConfig(const std::filesystem::path& path) {
     } 
     
     if (!std::filesystem::exists(path)) {
-        std::cout << "A config file didn't exist at the provided path. Using the default RK Logger config" << std::endl;
+        std::cout << "A config file didn't exist at the provided path " << path << ". Using the default RK Logger config" << std::endl;
         return;
     }
 
@@ -89,7 +89,7 @@ void getLoggingConfig(const std::filesystem::path& path) {
         }
 
         // Check if the user-provided value is a valid config value
-        const PossibleValuesMap& valuesMap = std::get<0>(configKeyIter->second);
+        const PossibleValuesMap& valuesMap = std::get<rk::config::ConfigMapIndices::POSSIBLE_VALUES>(configKeyIter->second);
         auto configValueIter = valuesMap.find(configValueStr);
         if (configValueIter == valuesMap.end()) {
             std::cout << "Value \"" << configValueStr << "\" for key \"" << configKey << "\" was not valid. Skipping" << std::endl;
@@ -101,6 +101,13 @@ void getLoggingConfig(const std::filesystem::path& path) {
         rk::config::updateConfigValue(configKeyIter, configValue);
     }
 }
+
+ConfigValue getConfigValueByKey(const std::string key) {
+    if (key.empty() || (configuration.find(key) == configuration.end())) {
+        return ConfigValue(-1);
+    }
+    return std::get<rk::config::ConfigMapIndices::CONFIG_VALUE>(configuration[key]);
+};
 
 void updateConfigValue(const ConfigMap::iterator& configKeyIter, const ConfigValue newValue) {
     ConfigValue& value =  std::get<1>(configKeyIter->second); // Access the current config's value
