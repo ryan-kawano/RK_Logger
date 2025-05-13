@@ -66,7 +66,7 @@ void padWithZeros(std::string&, const int);
  * @param std::string The timestamp to convert.
  * @return The converted timestamp.
  */
-std::string convertTimeStampForFileName(const std::string);
+std::string convertTimeStampForFileName(std::string);
 
 /**
  * @brief Converts a month to the format specified by the config.
