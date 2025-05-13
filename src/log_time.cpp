@@ -83,31 +83,28 @@ void padWithZeros(std::string& number, const int targetSize) {
     number = zeros + number;
 }
 
-std::string convertTimeStampForFileName(const std::string timeStamp) {
-    std::string timeStampForFileName = timeStamp;
-
-    // Remove any square brackets
-    size_t squareBracketIdx = timeStampForFileName.find_first_of("[]");
-    while (squareBracketIdx != std::string::npos) {
-        timeStampForFileName.replace(squareBracketIdx, 1, "");
-        squareBracketIdx = timeStampForFileName.find_first_of("[]");
+std::string convertTimeStampForFileName(std::string timeStamp) {
+    for (auto iter = timeStamp.begin(); iter != timeStamp.end(); ) {
+        if (*iter == '[' || *iter == ']') { // Remove any square brackets
+            iter = timeStamp.erase(iter);
+        }
+        else if (*iter == '|') { // Replace any vertical lines with underscores
+            *iter = '_';
+            iter++;
+        }
+        else if (*iter == ':') { // Replace any colons with dashes
+            *iter = '-';
+            iter++;
+        }
+        else if (*iter == ' ') { // Remove any white spaces
+            iter = timeStamp.erase(iter);
+        }
+        else {
+            iter++;
+        }
     }
 
-    // Replace any vertical lines with underscores
-    size_t verticalLineIdx = timeStampForFileName.find_first_of("|");
-    while (verticalLineIdx != std::string::npos) {
-        timeStampForFileName.replace(verticalLineIdx, 1, "_");
-        verticalLineIdx = timeStampForFileName.find_first_of("|");
-    }
-
-    // Replace any colons with dashes
-    size_t colonIndex = timeStampForFileName.find_first_of(":");
-    while (colonIndex != std::string::npos) {
-        timeStampForFileName.replace(colonIndex, 1, "-");
-        colonIndex = timeStampForFileName.find_first_of(":");
-    }
-
-    return timeStampForFileName;
+    return timeStamp;
 }
 
 std::function<std::string(const int)> monthFunc = [] (const int monthNum) {
