@@ -14,45 +14,52 @@ Settings can be changed at runtime via a config file. Some settings are:
 
 ## Example output
 ```
-Getting RK Logger config file
-Trying to open RK Logger config file at path "C:\\Users\\user1\\My_Projects\\rk_logger\\src\\demonstration\\rk_config.txt"
-Successfully opened the RK Logger config file
-Updating config with MM_DD_YYYY (numerical value: 0)
-Updating config with MONTH_NUM (numerical value: 0)
-[01-19-2025|20:10:02.640][1][main]Inside main
-[01-19-2025|20:10:02.640][1][main]The number is 10. The name is Ryan
-[01-19-2025|20:10:02.640][1][myFunc]Inside other_file.cpp
-[01-19-2025|20:10:02.647][3][operator()]Inside other thread
-[01-19-2025|20:10:02.648][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 15
-[01-19-2025|20:10:02.648][5][operator()]Random event happened. Printing a log for it. Random events remaining: 15
-[01-19-2025|20:10:04.645][5][operator()]Random event happened. Printing a log for it. Random events remaining: 14
-[01-19-2025|20:10:05.646][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 14
-[01-19-2025|20:10:05.646][5][operator()]Random event happened. Printing a log for it. Random events remaining: 13
-[01-19-2025|20:10:08.653][5][operator()]Random event happened. Printing a log for it. Random events remaining: 12
-[01-19-2025|20:10:08.653][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 13
-[01-19-2025|20:10:11.660][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 12
-[01-19-2025|20:10:11.660][5][operator()]Random event happened. Printing a log for it. Random events remaining: 11
-[01-19-2025|20:10:12.661][5][operator()]Random event happened. Printing a log for it. Random events remaining: 10
-[01-19-2025|20:10:14.662][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 11
-[01-19-2025|20:10:14.662][5][operator()]Random event happened. Printing a log for it. Random events remaining: 9
-[01-19-2025|20:10:17.667][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 10
-[01-19-2025|20:10:17.667][5][operator()]Random event happened. Printing a log for it. Random events remaining: 8
-[01-19-2025|20:10:17.668][5][operator()]Random event happened. Printing a log for it. Random events remaining: 7
-[01-19-2025|20:10:20.679][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 9
-[01-19-2025|20:10:22.682][5][operator()]Random event happened. Printing a log for it. Random events remaining: 6
-[01-19-2025|20:10:23.680][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 8
-[01-19-2025|20:10:24.686][5][operator()]Random event happened. Printing a log for it. Random events remaining: 5
-[01-19-2025|20:10:26.696][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 7
-[01-19-2025|20:10:29.701][5][operator()]Random event happened. Printing a log for it. Random events remaining: 4
-[01-19-2025|20:10:29.701][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 6
-[01-19-2025|20:10:29.702][5][operator()]Random event happened. Printing a log for it. Random events remaining: 3
-[01-19-2025|20:10:30.715][5][operator()]Random event happened. Printing a log for it. Random events remaining: 2
-[01-19-2025|20:10:30.715][5][operator()]Random event happened. Printing a log for it. Random events remaining: 1
-[01-19-2025|20:10:32.712][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 5
-[01-19-2025|20:10:35.718][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 4
-[01-19-2025|20:10:38.733][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 3
-[01-19-2025|20:10:41.745][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 2
-[01-19-2025|20:10:44.749][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 1
+[RKLogger Config] Getting RK Logger config file
+[RKLogger Config] Trying to open RK Logger config file at path "C:\\Users\\user1\\rk_logger\\src\\demonstration\\rk_config.txt"
+[RKLogger Config] Successfully opened the RK Logger config file
+[RKLogger Config] Updating config key "date_format" with value "MM_DD_YYYY"
+[RKLogger Config] Updating config key "month_format" with value "MONTH_NUM"
+[RKLogger Config] Updating config key "hour_format" with value "12"
+[RKLogger Config] Updating config key "write_to_log_file" with value "ENABLE"
+[RKLogger Time] Updating timestamp functions
+[RKLogger Time] Updating month function
+[RKLogger Time] Updating date function
+[RKLogger Time] Updating time function
+Writing to log file: logs_05-12-2025_07-41-27.004 PM.txt
+[05-12-2025|07:41:27.005 PM][1][main]Inside main
+[05-12-2025|07:41:27.005 PM][1][main]The number is 10. The name is Ryan
+[05-12-2025|07:41:27.005 PM][1][myFunc]Inside other_file.cpp
+[05-12-2025|07:41:27.012 PM][3][operator()]Inside other thread
+[05-12-2025|07:41:27.013 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 15
+[05-12-2025|07:41:27.013 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 15
+[05-12-2025|07:41:30.018 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 14
+[05-12-2025|07:41:31.732 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 14
+[05-12-2025|07:41:33.025 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 13
+[05-12-2025|07:41:33.730 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 13
+[05-12-2025|07:41:34.937 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 12
+[05-12-2025|07:41:36.028 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 12
+[05-12-2025|07:41:36.644 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 11
+[05-12-2025|07:41:39.036 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 11
+[05-12-2025|07:41:39.305 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 10
+[05-12-2025|07:41:41.567 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 9
+[05-12-2025|07:41:42.040 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 10
+[05-12-2025|07:41:42.879 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 8
+[05-12-2025|07:41:45.040 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 9
+[05-12-2025|07:41:45.195 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 7
+[05-12-2025|07:41:46.906 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 6
+[05-12-2025|07:41:47.183 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 5
+[05-12-2025|07:41:48.047 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 8
+[05-12-2025|07:41:50.518 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 4
+[05-12-2025|07:41:50.958 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 3
+[05-12-2025|07:41:51.057 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 7
+[05-12-2025|07:41:54.064 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 6
+[05-12-2025|07:41:55.726 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 2
+[05-12-2025|07:41:55.960 PM][5][operator()]Random event happened. Printing a log for it. Random events remaining: 1
+[05-12-2025|07:41:57.073 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 5
+[05-12-2025|07:42:00.075 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 4
+[05-12-2025|07:42:03.076 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 3
+[05-12-2025|07:42:06.076 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 2
+[05-12-2025|07:42:09.084 PM][4][operator()]Printing a message every 3 seconds. Timer messages remaining: 1
 ```
 ## Usage:
 The project can be compiled as a static library with the provided CMake file or compiled manually. The source code can also be used directly in a project and compiled with that project. See the `demonstration` directory for an example of how to use the logger.
