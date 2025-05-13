@@ -37,7 +37,9 @@ std::string generateTimeStamp(time_point time_point) {
     // Get month based on the config settings (as a name or as a number)
     std::string month;
     month = monthFunc(tm_local.tm_mon + 1); // Add 1 because std::tm's months start at 0
-    padWithZeros(month, 2);
+    if (rk::config::getInstance().getConfigValueByKey(rk::config::month_format::KEY) == rk::config::month_format::MONTH_NUM) {
+        padWithZeros(month, 2);
+    }
 
     /**
      * Need to calculate milliseconds. Convert the current time to seconds in order to lose precision and lose
