@@ -16,10 +16,10 @@ std::condition_variable cv;
 
 std::thread startLogger(const std::filesystem::path& configPath) {
     // Read config settings from a file (if it exists) and update the internal config
-    rk::config::getLoggingConfig(configPath);
+    rk::config::getInstance().parseLoggingConfig(configPath);
     rk::time::updateTimeStampFuncs();
 
-    if (rk::config::getConfigValueByKey(rk::config::configFileKeys::WRITE_TO_LOG_FILE)) {
+    if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
         openLogFile();
     }
 
@@ -31,7 +31,7 @@ std::thread startLogger(const std::filesystem::path& configPath) {
 
 void stopLogger(std::thread logThread) {
     endLogThread(std::move(logThread));
-    if (rk::config::getConfigValueByKey(rk::config::configFileKeys::WRITE_TO_LOG_FILE)) {
+    if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
         closeLogFile();
     }
 }

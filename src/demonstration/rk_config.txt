@@ -28,15 +28,15 @@ date_format=MM_DD_YYYY
 month_format=MONTH_NUM
 
 /**
- * TIME FORMAT
+ * HOUR FORMAT
  * 
- * Sets the time format to be either 12-hour or 24-hour format.
+ * Sets the hour format to be either 12-hour or 24-hour format.
  *
  * Possible values:
  * "12" e.g., 8:30PM becomes "08:30:00.000 PM"
  * "24" e.g., 8:30PM becomes "20:30:00.000"
  */
-time_format=12
+hour_format=12
 
 /**
  * WRITE TO LOG FILE
