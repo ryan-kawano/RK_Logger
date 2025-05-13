@@ -110,11 +110,44 @@ std::string convertTimeStampForFileName(const std::string timeStamp) {
     return timeStampForFileName;
 }
 
-std::function<std::string(const int)> monthFunc = nullptr;
+std::function<std::string(const int)> monthFunc = [] (const int monthNum) {
+    std::string month;
+    month = std::to_string(monthNum);
+    return month;
+};
 
-std::function<std::string(const std::string, const std::string, const std::string)> dateFunc = nullptr;
+std::function<std::string(const std::string, const std::string, const std::string)> dateFunc = [](const std::string year, const std::string month, const std::string day) {
+    std::string date;
+    date = "[" +
+        month +
+        "-" +
+        day +
+        "-" +
+        year +
+        "|";
+    return date;
+};
 
-std::function<std::string(std::string, const std::string, const std::string, const std::string)> timeFunc = nullptr;
+std::function<std::string(std::string, const std::string, const std::string, const std::string)> timeFunc = [] (std::string hour, const std::string minute, const std::string second, const std::string millisecond) {
+    int hourNum = std::stoi(hour);
+    const bool isPM = (hourNum >= 12) ? true : false;
+
+    if (isPM && hourNum != 12) {
+        hour = std::to_string(hourNum - 12);
+        padWithZeros(hour, 2);
+    }
+
+    std::string time = hour + ":" + minute + ":" + second + "." + millisecond;
+    if (isPM) {
+        time += " PM";
+    }
+    else {
+        time += " AM";
+    }
+    time += "]";
+
+    return time;
+};
 
 void updateMonthFunc() {
     RK_TIME_LOG("Updating month function\n");
