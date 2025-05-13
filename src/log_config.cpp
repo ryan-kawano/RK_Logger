@@ -2,6 +2,8 @@
  * @file log_config.cpp
  * @brief Source file for the logging config.
  */
+#define RK_CFG_LOG(...) std::cout << "[RKLogger Config] " << __VA_ARGS__
+
 #include <iostream>
 #include <fstream>
 
@@ -10,55 +12,116 @@
 namespace rk {
 namespace config {
 
-PossibleValuesMap dateFormatPossibleValues = {
-    { "MM_DD_YYYY", 0 }, // i.e., Feb 4, 2025 is formatted as [02|Feb]-04-2025
-    { "DD_MM_YYYY", 1 }, // i.e., Feb 4, 2025 is formatted as 04-[02|Feb]-2025
-    { "YYYY_MM_DD", 2 } // i.e., Feb 4, 2025 is formatted as 2025-[02|Feb]-04
-};
+const std::string CONFIG_FILE_NAME = "rk_config.txt";
 
-PossibleValuesMap monthFormatPossibleValues = {
-    { "MONTH_NUM", 0 }, // Prints the months name, e.g., Jan, Feb, etc.
-    { "MONTH_NAME", 1 } // Prints the month's number, e.g., 01, 02, etc.
-};
+namespace date_format {
+    const std::string KEY = "date_format";
+    const std::string MM_DD_YYYY = "MM_DD_YYYY";
+    const std::string DD_MM_YYYY = "DD_MM_YYYY";
+    const std::string YYYY_MM_DD = "YYYY_MM_DD";
+}
 
-PossibleValuesMap timeFormatPossibleValues = {
-    { "12", 0 }, // Uses 12-hour clock format, e.g., 8:30PM becomes "08:30:00.000 PM"
-    { "24", 1 } // Uses 24-hour clock format, e.g., 8:30PM becomes "20:30:00.000"
-};
+namespace month_format {
+    const std::string KEY = "month_format";
+    const std::string MONTH_NUM = "MONTH_NUM";
+    const std::string MONTH_NAME = "MONTH_NAME";
+}
 
-PossibleValuesMap writeToLogFilePossibleValues = {
-    { "DISABLE", 0 },
-    { "ENABLE", 1 }
-};
+namespace hour_format {
+    const std::string KEY = "hour_format";
+    const std::string TWELVE_HOUR = "12";
+    const std::string TWENTY_FOUR_HOUR = "24";
+}
 
-ConfigMap configuration = {
-    { configFileKeys::DATE_FORMAT, std::make_tuple(dateFormatPossibleValues, dateFormatPossibleValues.at("MM_DD_YYYY")) },
-    { configFileKeys::MONTH_FORMAT, std::make_tuple(monthFormatPossibleValues, monthFormatPossibleValues.at("MONTH_NUM")) },
-    { configFileKeys::TIME_FORMAT, std::make_tuple(timeFormatPossibleValues, timeFormatPossibleValues.at("12")) },
-    { configFileKeys::WRITE_TO_LOG_FILE, std::make_tuple(writeToLogFilePossibleValues, writeToLogFilePossibleValues.at("ENABLE")) },
-};
+namespace write_to_log_file {
+    const std::string KEY = "write_to_log_file";
+    const std::string DISABLE = "DISABLE";
+    const std::string ENABLE = "ENABLE";
+}
 
-void getLoggingConfig(const std::filesystem::path& path) {
-    std::cout << "Getting RK Logger config file" << std::endl;
+namespace {
+    ValidValuesSet dateFormat = {
+        date_format::MM_DD_YYYY,
+        date_format::DD_MM_YYYY,
+        date_format::YYYY_MM_DD,
+    };
+
+    ValidValuesSet monthFormat = {
+        month_format::MONTH_NUM,
+        month_format::MONTH_NAME,
+    };
+
+    ValidValuesSet hourFormat = {
+        hour_format::TWELVE_HOUR,
+        hour_format::TWENTY_FOUR_HOUR,
+    };
+
+    ValidValuesSet writeToLogFile = {
+        write_to_log_file::DISABLE,
+        write_to_log_file::ENABLE,
+    };
+
+    rk::config::ValidKeyValuesMap validKeyValues = {
+        { date_format::KEY, dateFormat },
+        { month_format::KEY, monthFormat },
+        { hour_format::KEY, hourFormat },
+        { write_to_log_file::KEY, writeToLogFile },
+    };
+
+    rk::config::ConfigMap defaultConfig = {
+        { date_format::KEY, date_format::MM_DD_YYYY },
+        { month_format::KEY, month_format::MONTH_NUM },
+        { hour_format::KEY, hour_format::TWELVE_HOUR },
+        { write_to_log_file::KEY, write_to_log_file::ENABLE },
+    };
+} // namespace
+
+Config& getInstance() {
+    static Config configuration(std::move(defaultConfig), std::move(rk::config::validKeyValues));
+    return configuration;
+}
+
+void Config::setConfigValue(const ConfigKey key, const ConfigValue val) {
+    if (!isKeyAndValueValid(key, val)) {
+        return;
+    }
+    config[key] = val;
+}
+
+ConfigValue Config::getConfigValueByKey(const ConfigKey key) const {
+    if (!isKeyValid(key)) {
+        return "";
+    }
+    return config.at(key);
+}
+
+/**
+ * @brief Parses the logging config file and updates the settings based on the contents.
+ * 
+ * If no config file is provided, then it will just use the default settings.
+ * 
+ * @param path The path to the config file including the file name itself. The default path is the same directory as the executable.
+ */
+void Config::parseLoggingConfig(const std::filesystem::path& path) {
+    RK_CFG_LOG("Getting RK Logger config file" << std::endl);
 
     if (path.empty()) {
-        std::cout << "The path to the config was empty. Using the default RK Logger config." << std::endl;
+        RK_CFG_LOG("The path to the config was empty. Using the default RK Logger config." << std::endl);
         return;
     } 
-    
     if (!std::filesystem::exists(path)) {
-        std::cout << "A config file didn't exist at the provided path " << path << ". Using the default RK Logger config" << std::endl;
+        RK_CFG_LOG("A config file didn't exist at the provided path " << path << ". Using the default RK Logger config" << std::endl);
         return;
     }
 
-    std::cout << "Trying to open RK Logger config file at path " << path << "" << std::endl;
+    RK_CFG_LOG("Trying to open RK Logger config file at path " << path << "" << std::endl);
     std::ifstream configFile(path);
     if (!configFile) {
-        std::cout << "Could not open RK Logger config file. Either one wasn't provided or the path provided was invalid. Using default RK Logger config" << std::endl;
+        RK_CFG_LOG("Could not open RK Logger config file. Either one wasn't provided or the path provided was invalid. Using default RK Logger config" << std::endl);
         return;
     }
     else {
-        std::cout << "Successfully opened the RK Logger config file" << std::endl;
+        RK_CFG_LOG("Successfully opened the RK Logger config file" << std::endl);
     }
 
     // Read through the file and update the config with any valid settings
@@ -71,48 +134,42 @@ void getLoggingConfig(const std::filesystem::path& path) {
             continue;
         }
 
-        const std::string configKey = line.substr(0, equalsIndex);
-
-        // Check if the user-provided key is a valid logger setting
-        auto configKeyIter = rk::config::configuration.find(configKey);
-        if (configKeyIter == rk::config::configuration.end()) {
-            std::cout << "Key \"" << configKey << "\" was not valid. Skipping" << std::endl;
+        const ConfigKey configKey = line.substr(0, equalsIndex);
+        if (!isKeyValid(configKey)) {
+            RK_CFG_LOG("Key \"" << configKey << "\" was not valid. Not updating." << std::endl);
             continue;
         }
 
-        std::string configValueStr = line.substr(equalsIndex + 1);
-
+        ConfigValue configValue = line.substr(equalsIndex + 1);
         // Remove new line at end of configValue, if it exists
-        const size_t newLineIndex = configValueStr.find_last_of("\n");
-        if (newLineIndex != std::string::npos && newLineIndex == configValueStr.size() - 1) {
-            configValueStr = configValueStr.substr(0, configValueStr.size());
+        const size_t newLineIndex = configValue.find_last_of("\n");
+        if (newLineIndex != std::string::npos && newLineIndex == configValue.size() - 1) {
+            configValue = configValue.substr(0, configValue.size());
         }
-
-        // Check if the user-provided value is a valid config value
-        const PossibleValuesMap& valuesMap = std::get<rk::config::ConfigMapIndices::POSSIBLE_VALUES>(configKeyIter->second);
-        auto configValueIter = valuesMap.find(configValueStr);
-        if (configValueIter == valuesMap.end()) {
-            std::cout << "Value \"" << configValueStr << "\" for key \"" << configKey << "\" was not valid. Skipping" << std::endl;
+        if (!isKeyAndValueValid(configKey, configValue)) {
+            RK_CFG_LOG("Value \"" << configValue << "\" for key \"" << configKey << "\" was not valid. Not updating." << std::endl);
             continue;
         }
 
-        const ConfigValue configValue = configValueIter->second;
-        std::cout << "Updating config key \"" << configKey << "\" with value \"" << configValueStr << "\"" << std::endl;
-        rk::config::updateConfigValue(configKeyIter, configValue);
+        RK_CFG_LOG("Updating config key \"" << configKey << "\" with value \"" << configValue << "\"" << std::endl);
+        setConfigValue(configKey, configValue);
     }
 }
 
-ConfigValue getConfigValueByKey(const std::string key) {
-    if (key.empty() || (configuration.find(key) == configuration.end())) {
-        return ConfigValue(-1);
+bool Config::isKeyValid(const ConfigKey key) const {
+    if (key.empty()) {
+        return false;
     }
-    return std::get<rk::config::ConfigMapIndices::CONFIG_VALUE>(configuration[key]);
-};
+    return validKeyValues.find(key) != validKeyValues.end();
+}
 
-void updateConfigValue(const ConfigMap::iterator& configKeyIter, const ConfigValue newValue) {
-    ConfigValue& value =  std::get<1>(configKeyIter->second); // Access the current config's value
-    value = newValue;
-};
+bool Config::isKeyAndValueValid(const ConfigKey key, const ConfigValue value) const {
+    if (value.empty() || !isKeyValid(key)) {
+        return false;
+    }
+    const ValidValuesSet& validValues = validKeyValues.at(key);
+    return validValues.find(value) != validValues.end();
+}
 
 } // namespace config
 } // namespace rk

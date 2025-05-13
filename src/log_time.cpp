@@ -2,6 +2,8 @@
  * @file log_time.cpp
  * @brief Source file for code related to time for logs.
  */
+#define RK_TIME_LOG(...) std::cout << "[RKLogger Time] " << __VA_ARGS__
+
 #include <iomanip>
 #include <iostream>
 
@@ -113,16 +115,16 @@ std::function<std::string(const std::string, const std::string, const std::strin
 std::function<std::string(std::string, const std::string, const std::string, const std::string)> timeFunc = nullptr;
 
 void updateMonthFunc() {
-    std::cout << "Updating month function\n";
-    const rk::config::ConfigValue monthFormat = rk::config::getConfigValueByKey(rk::config::configFileKeys::MONTH_FORMAT);
-    if (monthFormat == std::get<0>(rk::config::configuration.at("month_format")).at("MONTH_NUM")) {
+    RK_TIME_LOG("Updating month function\n");
+    const rk::config::ConfigValue monthFormat = rk::config::getInstance().getConfigValueByKey(rk::config::month_format::KEY);
+    if (monthFormat == rk::config::month_format::MONTH_NUM) {
         monthFunc = [] (const int monthNum) {
             std::string month;
             month = std::to_string(monthNum);
             return month;
         };
     }
-    else if(monthFormat == std::get<0>(rk::config::configuration.at("month_format")).at("MONTH_NAME")) {
+    else if(monthFormat == rk::config::month_format::MONTH_NAME) {
         monthFunc = [] (const int monthNum) {
             std::string month;
             month = monthNumToName(monthNum);
@@ -132,53 +134,53 @@ void updateMonthFunc() {
 }
 
 void updateDateFunc() {
-    std::cout << "Updating date function\n";
-    const rk::config::ConfigValue dateFormat = rk::config::getConfigValueByKey(rk::config::configFileKeys::DATE_FORMAT);
-    if (dateFormat == std::get<0>(rk::config::configuration.at("date_format")).at("MM_DD_YYYY")) {
+    RK_TIME_LOG("Updating date function\n");
+    const rk::config::ConfigValue dateFormat = rk::config::getInstance().getConfigValueByKey(rk::config::date_format::KEY);
+    if (dateFormat == rk::config::date_format::MM_DD_YYYY) {
         dateFunc = [](const std::string year, const std::string month, const std::string day) {
-            std::string timeStamp;
-            timeStamp = "[" +
+            std::string date;
+            date = "[" +
                         month +
                         "-" +
                         day +
                         "-" +
                         year +
                         "|";
-            return timeStamp;
+            return date;
         };
     }
-    else if (dateFormat == std::get<0>(rk::config::configuration.at("date_format")).at("DD_MM_YYYY")) {
+    else if (dateFormat == rk::config::date_format::DD_MM_YYYY) {
         dateFunc = [](const std::string year, const std::string month, const std::string day) {
-            std::string timeStamp;
-            timeStamp = "[" +
+            std::string date;
+            date = "[" +
                         day +
                         "-" +
                         month +
                         "-" +
                         year +
                         "|";
-            return timeStamp;
+            return date;
         };
     }
-    else if (dateFormat == std::get<0>(rk::config::configuration.at("date_format")).at("YYYY_MM_DD")) {
+    else if (dateFormat == rk::config::date_format::YYYY_MM_DD) {
         dateFunc = [](const std::string year, const std::string month, const std::string day) {
-            std::string timeStamp;
-            timeStamp = "[" +
+            std::string date;
+            date = "[" +
                         year +
                         "-" +
                         month +
                         "-" +
                         day +
                         "|";
-            return timeStamp;
+            return date;
         };
     }
 }
 
 void updateTimeFunc() {
-    std::cout << "Updating time function\n";
-    const rk::config::ConfigValue timeFormat = rk::config::getConfigValueByKey(rk::config::configFileKeys::TIME_FORMAT);
-    if (timeFormat == std::get<0>(rk::config::configuration.at("time_format")).at("12")) {
+    RK_TIME_LOG("Updating time function\n");
+    const rk::config::ConfigValue hourFormat = rk::config::getInstance().getConfigValueByKey(rk::config::hour_format::KEY);
+    if (hourFormat == rk::config::hour_format::TWELVE_HOUR) {
         timeFunc = [] (std::string hour, const std::string minute, const std::string second, const std::string millisecond) {
             int hourNum = std::stoi(hour);
             const bool isPM = (hourNum >= 12) ? true : false;
@@ -190,17 +192,17 @@ void updateTimeFunc() {
 
             std::string time = hour + ":" + minute + ":" + second + "." + millisecond;
             if (isPM) {
-                time = time + " PM";
+                time += " PM";
             }
             else {
-                time = time + " AM";
+                time += " AM";
             }
-            time = time + "]";
+            time += "]";
 
             return time;
         };
     }
-    else if(timeFormat == std::get<0>(rk::config::configuration.at("time_format")).at("24")) {
+    else if(hourFormat == rk::config::hour_format::TWENTY_FOUR_HOUR) {
         timeFunc = [] (std::string hour, const std::string minute, const std::string second, const std::string millisecond) {
             return hour + ":" + minute + ":" + second + "." + millisecond + "]";
         };
@@ -208,7 +210,7 @@ void updateTimeFunc() {
 }
 
 void updateTimeStampFuncs() {
-    std::cout << "Updating timestamp functions\n";
+    RK_TIME_LOG("Updating timestamp functions\n");
     updateMonthFunc();
     updateDateFunc();
     updateTimeFunc();
