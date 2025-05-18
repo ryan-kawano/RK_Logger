@@ -9,9 +9,10 @@
 #include <string>
 #include <functional>
 #include <mutex>
+#include <sstream>
 
 namespace rk {
-namespace time {
+namespace time_internal {
 
 typedef std::chrono::system_clock system_clock;
 typedef std::chrono::system_clock::time_point time_point;
@@ -123,7 +124,7 @@ void updateTimeFunc();
  */
 void updateTimeStampFuncs();
 
-} // namespace time
+} // namespace time_internal
 } // namespace rk
 
 #endif // #ifndef LOG_TIME_H

@@ -48,6 +48,10 @@ namespace write_to_log_file {
     extern const std::string DISABLE;
 }
 
+/**
+ * Represents the configuration used by the logger. Settings are set to default values on startup and can be changed by providing a config file or changing
+ * settings at runtime.
+ */
 class Config {
 public:
     Config() = delete;
@@ -95,6 +99,12 @@ public:
      */
     bool isKeyAndValueValid(const ConfigKey, const ConfigValue) const;
 
+    /**
+     * @brief Returns valid key/value pairs for the config.
+     * 
+     * @return ValidKeyValuesMap The map containing valid key/value pairs for the config.
+     */
+    const ValidKeyValuesMap& getValidKeyValues() const;
 private:
     Config(ConfigMap&& defaultConfig, ValidKeyValuesMap&& keyValues) : config(std::move(defaultConfig)), validKeyValues(std::move(keyValues)) {};
 
@@ -112,4 +122,4 @@ Config& getInstance();
 } // namespace config
 } // namespace rk
 
-#endif // #ifndef LOG_CONFIG_H
+#endif // #ifndef CONFIG_H

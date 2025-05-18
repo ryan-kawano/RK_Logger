@@ -3,15 +3,14 @@
  * @brief Source file for code related to time for logs.
  */
 #define RK_TIME_LOG(...) std::cout << "[RKLogger Time] " << __VA_ARGS__
-
 #include <iomanip>
 #include <iostream>
 
-#include "rk_logger/log_time.h"
-#include "rk_logger/log_config.h"
+#include <rk_logger/log_time.h>
+#include <rk_logger/config.h>
 
 namespace rk {
-namespace time {
+namespace time_internal {
 
 std::mutex tmMutex;
 
@@ -248,5 +247,5 @@ void updateTimeStampFuncs() {
     updateTimeFunc();
 }
 
-} // namespace time
+} // namespace time_internal
 } // namespace rk

@@ -18,19 +18,15 @@
 #include <condition_variable>
 #include <chrono>
 
-#include "rk_logger/log_time.h"
-#include "rk_logger/log_config.h"
+#include <rk_logger/config.h>
+#include <rk_logger/log_time.h>
 
 /**
  * @brief Adds a message to the log queue.
  * 
- * This is the primary macro that should be used to log messages. It does not have to be called from the
- * rk::log namespace. It uses the function rk::log::logMessage() in order to add the message to the
- * log queue. It can take any number of arguments for logging. See the demonstration directory for an
- * example.
+ * This is the primary macro that should be used to log messages. It uses an internal function to add the message to the
+ * log queue. It can take any number of arguments for logging. See the demonstration directory for an example.
  */
-#define RK_LOG(...) rk::log::logMessage(rk::time::system_clock::now(), __func__, __VA_ARGS__)
-
 /**
  * @brief Verifies whether the log file was created and opened.
  */
@@ -39,19 +35,14 @@ if (!rk::log::logFile) { \
     std::cout << "Unable to open output log file\n"; \
     throw -1; \
 } \
+#define RK_LOG(...) rk::log_internal::logMessage(rk::time_internal::system_clock::now(), __func__, __VA_ARGS__)
 
 namespace rk {
 namespace log {
 
-extern std::mutex logQueueMutex; 
-extern std::queue<std::string> logQueue; /**< Main queue for holding log messages */ 
-extern std::mutex endLoopMtx;
-extern bool endLogLoop;
-extern std::ofstream logFile;
-extern std::condition_variable cv;
-
 /**
  * @brief The main function that starts the logger. Sets up various things like configs, logging threads, etc.
+ * Call this first, before logging any messages.
  * 
  * @param configPath The path to the config file.
  * @return The thread that is running the log loop.
@@ -59,11 +50,24 @@ extern std::condition_variable cv;
 std::thread startLogger(const std::filesystem::path& configPath = std::filesystem::current_path()/rk::config::CONFIG_FILE_NAME);
 
 /**
- * @brief Ends the logger.
+ * @brief Ends the logger. Call this at the end before the program ends.
  * 
  * @param std::thread The thread that was running the log loop.
  */
 void stopLogger(std::thread);
+
+} // namespace log
+} // namespace rk
+
+namespace rk {
+namespace log_internal {
+
+extern std::mutex logQueueMutex;
+extern std::queue<std::string> logQueue; /**< Main queue for holding log messages */
+extern std::mutex endLoopMtx;
+extern bool endLogLoop;
+extern std::ofstream logFile;
+extern std::condition_variable logQueueCv;
 
 /**
  * @brief Adds a message to the log queue.
@@ -75,9 +79,9 @@ void stopLogger(std::thread);
  * @param args The values to construct the message from.
  */
 template<typename... Args>
-void logMessage(const rk::time::time_point time, const std::string funcName, const Args&... args) {
+void logMessage(const rk::time_internal::time_point time, const std::string funcName, const Args&... args) {
     std::ostringstream oss;
-    oss << rk::time::generateTimeStamp(time); // Prefix the timestamp
+    oss << rk::time_internal::generateTimeStamp(time); // Prefix the timestamp
     oss << "[" << std::this_thread::get_id() << "][" << funcName << "]"; // Prefix the thread id and function name
     (oss << ... << args);
     std::lock_guard<std::mutex> lock(logQueueMutex);
@@ -122,7 +126,7 @@ void openLogFile();
  */
 void closeLogFile();
 
-} // namespace log
+} // namespace log_internal
 } // namespace rk
 
 #endif // #ifndef LOG_H

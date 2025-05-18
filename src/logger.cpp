@@ -2,39 +2,46 @@
  * @file log.cpp
  * @brief Source file for the logger.
  */
-#include "rk_logger/logger.h"
+#include <rk_logger/logger.h>
+#include <rk_logger/log_time.h>
 
 namespace rk {
 namespace log {
+
+std::thread startLogger(const std::filesystem::path& configPath) {
+    // Read config settings from a file (if it exists) and update the internal config
+    rk::config::getInstance().parseLoggingConfig(configPath);
+    rk::time_internal::updateTimeStampFuncs();
+
+    if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
+        rk::log_internal::openLogFile();
+    }
+
+    LOG_VERIFY
+    std::thread logThread = rk::log_internal::startLogThread();
+
+    return logThread;
+}
+
+void stopLogger(std::thread logThread) {
+    rk::log_internal::endLogThread(std::move(logThread));
+    if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
+        rk::log_internal::closeLogFile();
+    }
+}
+
+} // namespace log
+} // namespace rk
+
+namespace rk {
+namespace log_internal {
 
 std::mutex logQueueMutex;
 std::queue<std::string> logQueue;
 std::mutex endLoopMtx;
 bool endLogLoop;
 std::ofstream logFile;
-std::condition_variable cv;
-
-std::thread startLogger(const std::filesystem::path& configPath) {
-    // Read config settings from a file (if it exists) and update the internal config
-    rk::config::getInstance().parseLoggingConfig(configPath);
-    rk::time::updateTimeStampFuncs();
-
-    if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
-        openLogFile();
-    }
-
-    std::thread logThread = startLogThread();
-    LOG_VERIFY
-
-    return logThread;
-}
-
-void stopLogger(std::thread logThread) {
-    endLogThread(std::move(logThread));
-    if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
-        closeLogFile();
-    }
-}
+std::condition_variable logQueueCv;
 
 /**
  * Checks whether the log queue has messages or the endLogLoop flag is true. If either are true, it will return true,
@@ -102,10 +109,9 @@ void endLogThread(std::thread thread) {
 }
 
 void openLogFile() {
-    std::string timeStamp = rk::time::generateTimeStamp(rk::time::system_clock::now());
-    timeStamp = rk::time::convertTimeStampForFileName(timeStamp);
+    std::string timeStamp = rk::time_internal::generateTimeStamp(rk::time_internal::system_clock::now());
+    timeStamp = rk::time_internal::convertTimeStampForFileName(timeStamp);
     const std::string logFileName = std::string("logs_") + timeStamp + ".txt";
-    std::cout << "Writing to log file: " << logFileName << std::endl;
     logFile.open(logFileName);
 }
 
@@ -113,5 +119,5 @@ void closeLogFile() {
     logFile.close();
 }
 
-} // namespace log
+} // namespace log_internal
 } // namespace rk

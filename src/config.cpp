@@ -3,11 +3,10 @@
  * @brief Source file for the logging config.
  */
 #define RK_CFG_LOG(...) std::cout << "[RKLogger Config] " << __VA_ARGS__
-
 #include <iostream>
 #include <fstream>
 
-#include "rk_logger/log_config.h"
+#include <rk_logger/config.h>
 
 namespace rk {
 namespace config {
@@ -39,6 +38,7 @@ namespace write_to_log_file {
     const std::string ENABLE = "ENABLE";
 }
 
+// The data in this namespace is just the key/value constants above put into containers to allow querying the data.
 namespace {
     ValidValuesSet dateFormat = {
         date_format::MM_DD_YYYY,
@@ -61,14 +61,14 @@ namespace {
         write_to_log_file::ENABLE,
     };
 
-    rk::config::ValidKeyValuesMap validKeyValues = {
+    ValidKeyValuesMap validKeyValues = {
         { date_format::KEY, dateFormat },
         { month_format::KEY, monthFormat },
         { hour_format::KEY, hourFormat },
         { write_to_log_file::KEY, writeToLogFile },
     };
 
-    rk::config::ConfigMap defaultConfig = {
+    ConfigMap defaultConfig = {
         { date_format::KEY, date_format::MM_DD_YYYY },
         { month_format::KEY, month_format::MONTH_NUM },
         { hour_format::KEY, hour_format::TWELVE_HOUR },
@@ -76,10 +76,6 @@ namespace {
     };
 } // namespace
 
-Config& getInstance() {
-    static Config configuration(std::move(defaultConfig), std::move(rk::config::validKeyValues));
-    return configuration;
-}
 
 void Config::setConfigValue(const ConfigKey key, const ConfigValue val) {
     if (!isKeyAndValueValid(key, val)) {
@@ -169,6 +165,15 @@ bool Config::isKeyAndValueValid(const ConfigKey key, const ConfigValue value) co
     }
     const ValidValuesSet& validValues = validKeyValues.at(key);
     return validValues.find(value) != validValues.end();
+}
+
+const ValidKeyValuesMap& Config::getValidKeyValues() const {
+    return validKeyValues;
+}
+
+Config& getInstance() {
+    static Config configuration(std::move(defaultConfig), std::move(validKeyValues));
+    return configuration;
 }
 
 } // namespace config
