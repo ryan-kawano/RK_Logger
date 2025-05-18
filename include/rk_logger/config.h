@@ -1,15 +1,16 @@
 /**
- * @file log_config.h
+ * @file config.h
  * @brief Header file for the logging config.
  */
-#ifndef LOG_CONFIG_H
-#define LOG_CONFIG_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include <unordered_map>
 #include <string>
 #include <unordered_set>
 #include <cstdint>
 #include <filesystem>
+#include <sstream>
 
 namespace rk {
 namespace config {
