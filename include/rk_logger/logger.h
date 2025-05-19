@@ -27,14 +27,6 @@
  * This is the primary macro that should be used to log messages. It uses an internal function to add the message to the
  * log queue. It can take any number of arguments for logging. See the demonstration directory for an example.
  */
-/**
- * @brief Verifies whether the log file was created and opened.
- */
-#define LOG_VERIFY \
-if (!rk::log::logFile) { \
-    std::cout << "Unable to open output log file\n"; \
-    throw -1; \
-} \
 #define RK_LOG(...) rk::log_internal::logMessage(rk::time_internal::system_clock::now(), __func__, __VA_ARGS__)
 
 namespace rk {
@@ -125,6 +117,11 @@ void openLogFile();
  * @brief Closes the log file.
  */
 void closeLogFile();
+
+/**
+ * @brief Verifies whether the log file was created and opened.
+ */
+void verifyLogFile();
 
 /**
  * @brief Prints an internal log message for the main logging module.

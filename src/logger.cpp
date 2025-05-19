@@ -20,7 +20,6 @@ std::thread startLogger(const std::filesystem::path& configPath) {
         rk::log_internal::verifyLogFile();
     }
 
-    LOG_VERIFY
     std::thread logThread = rk::log_internal::startLogThread();
 
     return logThread;
@@ -122,6 +121,13 @@ void openLogFile() {
 
 void closeLogFile() {
     logFile.close();
+}
+
+void verifyLogFile() {
+    if (!logFile) {
+        rkLogInternal("Unable to open output log file\n");
+        throw -1;
+    }
 }
 
 } // namespace log_internal
