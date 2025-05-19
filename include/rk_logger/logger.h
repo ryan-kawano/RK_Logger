@@ -78,7 +78,7 @@ void logMessage(const rk::time_internal::time_point time, const std::string func
     (oss << ... << args);
     std::lock_guard<std::mutex> lock(logQueueMutex);
     logQueue.push(oss.str());
-    cv.notify_one();
+    logQueueCv.notify_one();
 }
 
 /**

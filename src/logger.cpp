@@ -81,7 +81,7 @@ void logQueueLoop() {
             std::unique_lock<std::mutex> endLoopLock(endLoopMtx);
             if (!endLogLoop) {
                 endLoopLock.unlock();
-                cv.wait(logLock, rk::log::condVarPredicate);
+                logQueueCv.wait(logLock, rk::log_internal::condVarPredicate);
             }
             else {
                 break;
@@ -103,7 +103,7 @@ void endLogThread(std::thread thread) {
     {
         std::lock_guard<std::mutex> lock(endLoopMtx);
         endLogLoop = true;
-        cv.notify_all();
+        logQueueCv.notify_all();
     }
 
     if (thread.joinable()) {
