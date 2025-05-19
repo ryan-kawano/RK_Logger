@@ -9,12 +9,15 @@ namespace rk {
 namespace log {
 
 std::thread startLogger(const std::filesystem::path& configPath) {
+    rk::log_internal::rkLogInternal("Starting RK Logger\n");
+
     // Read config settings from a file (if it exists) and update the internal config
     rk::config::getInstance().parseLoggingConfig(configPath);
     rk::time_internal::updateTimeStampFuncs();
 
     if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
         rk::log_internal::openLogFile();
+        rk::log_internal::verifyLogFile();
     }
 
     LOG_VERIFY
@@ -24,6 +27,7 @@ std::thread startLogger(const std::filesystem::path& configPath) {
 }
 
 void stopLogger(std::thread logThread) {
+    rk::log_internal::rkLogInternal("Stopping RK Logger\n");
     rk::log_internal::endLogThread(std::move(logThread));
     if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
         rk::log_internal::closeLogFile();
@@ -112,6 +116,7 @@ void openLogFile() {
     std::string timeStamp = rk::time_internal::generateTimeStamp(rk::time_internal::system_clock::now());
     timeStamp = rk::time_internal::convertTimeStampForFileName(timeStamp);
     const std::string logFileName = std::string("logs_") + timeStamp + ".txt";
+    rkLogInternal("Writing to log file: ", logFileName, "\n");
     logFile.open(logFileName);
 }
 

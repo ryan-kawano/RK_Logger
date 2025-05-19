@@ -124,6 +124,19 @@ void updateTimeFunc();
  */
 void updateTimeStampFuncs();
 
+/**
+ * @brief Prints an internal log message for the time module.
+ * 
+ * @param args The message to print.
+ */
+template<typename... Args>
+void timeLog(const Args&... args) {
+    std::ostringstream oss;
+    oss << "[RKLogger Time]";
+    (oss << ... << args);
+    std::cout << oss.str();
+}
+
 } // namespace time_internal
 } // namespace rk
 

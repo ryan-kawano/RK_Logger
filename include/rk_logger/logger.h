@@ -126,6 +126,19 @@ void openLogFile();
  */
 void closeLogFile();
 
+/**
+ * @brief Prints an internal log message for the main logging module.
+ * 
+ * @param args The message to print.
+ */
+template<typename... Args>
+void rkLogInternal(const Args&... args) {
+    std::ostringstream oss;
+    oss << "[RKLogger]";
+    (oss << ... << args);
+    std::cout << oss.str();
+}
+
 } // namespace log_internal
 } // namespace rk
 

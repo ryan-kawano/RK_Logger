@@ -122,4 +122,23 @@ Config& getInstance();
 } // namespace config
 } // namespace rk
 
+namespace rk {
+namespace config_internal {
+
+/**
+ * @brief Prints an internal log message for the config module.
+ * 
+ * @param args The message to print.
+ */
+template<typename... Args>
+void cfgLog(const Args&... args) {
+    std::ostringstream oss;
+    oss << "[RKLogger Config]";
+    (oss << ... << args);
+    std::cout << oss.str();
+}
+
+} // namespace config_internal
+} // namespace rk
+
 #endif // #ifndef CONFIG_H
