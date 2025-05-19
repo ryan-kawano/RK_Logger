@@ -1,15 +1,16 @@
 /**
- * @file log_config.h
+ * @file config.h
  * @brief Header file for the logging config.
  */
-#ifndef LOG_CONFIG_H
-#define LOG_CONFIG_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include <unordered_map>
 #include <string>
 #include <unordered_set>
 #include <cstdint>
 #include <filesystem>
+#include <sstream>
 
 namespace rk {
 namespace config {
@@ -47,6 +48,10 @@ namespace write_to_log_file {
     extern const std::string DISABLE;
 }
 
+/**
+ * Represents the configuration used by the logger. Settings are set to default values on startup and can be changed by providing a config file or changing
+ * settings at runtime.
+ */
 class Config {
 public:
     Config() = delete;
@@ -94,6 +99,12 @@ public:
      */
     bool isKeyAndValueValid(const ConfigKey, const ConfigValue) const;
 
+    /**
+     * @brief Returns valid key/value pairs for the config.
+     * 
+     * @return ValidKeyValuesMap The map containing valid key/value pairs for the config.
+     */
+    const ValidKeyValuesMap& getValidKeyValues() const;
 private:
     Config(ConfigMap&& defaultConfig, ValidKeyValuesMap&& keyValues) : config(std::move(defaultConfig)), validKeyValues(std::move(keyValues)) {};
 
@@ -111,4 +122,23 @@ Config& getInstance();
 } // namespace config
 } // namespace rk
 
-#endif // #ifndef LOG_CONFIG_H
+namespace rk {
+namespace config_internal {
+
+/**
+ * @brief Prints an internal log message for the config module.
+ * 
+ * @param args The message to print.
+ */
+template<typename... Args>
+void cfgLog(const Args&... args) {
+    std::ostringstream oss;
+    oss << "[RKLogger Config]";
+    (oss << ... << args);
+    std::cout << oss.str();
+}
+
+} // namespace config_internal
+} // namespace rk
+
+#endif // #ifndef CONFIG_H

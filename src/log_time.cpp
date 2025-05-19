@@ -2,16 +2,14 @@
  * @file log_time.cpp
  * @brief Source file for code related to time for logs.
  */
-#define RK_TIME_LOG(...) std::cout << "[RKLogger Time] " << __VA_ARGS__
-
 #include <iomanip>
 #include <iostream>
 
-#include "rk_logger/log_time.h"
-#include "rk_logger/log_config.h"
+#include <rk_logger/log_time.h>
+#include <rk_logger/config.h>
 
 namespace rk {
-namespace time {
+namespace time_internal {
 
 std::mutex tmMutex;
 
@@ -147,7 +145,7 @@ std::function<std::string(std::string, const std::string, const std::string, con
 };
 
 void updateMonthFunc() {
-    RK_TIME_LOG("Updating month function\n");
+    timeLog("Updating month function\n");
     const rk::config::ConfigValue monthFormat = rk::config::getInstance().getConfigValueByKey(rk::config::month_format::KEY);
     if (monthFormat == rk::config::month_format::MONTH_NUM) {
         monthFunc = [] (const int monthNum) {
@@ -166,7 +164,7 @@ void updateMonthFunc() {
 }
 
 void updateDateFunc() {
-    RK_TIME_LOG("Updating date function\n");
+    timeLog("Updating date function\n");
     const rk::config::ConfigValue dateFormat = rk::config::getInstance().getConfigValueByKey(rk::config::date_format::KEY);
     if (dateFormat == rk::config::date_format::MM_DD_YYYY) {
         dateFunc = [](const std::string year, const std::string month, const std::string day) {
@@ -210,7 +208,7 @@ void updateDateFunc() {
 }
 
 void updateTimeFunc() {
-    RK_TIME_LOG("Updating time function\n");
+    timeLog("Updating time function\n");
     const rk::config::ConfigValue hourFormat = rk::config::getInstance().getConfigValueByKey(rk::config::hour_format::KEY);
     if (hourFormat == rk::config::hour_format::TWELVE_HOUR) {
         timeFunc = [] (std::string hour, const std::string minute, const std::string second, const std::string millisecond) {
@@ -242,11 +240,11 @@ void updateTimeFunc() {
 }
 
 void updateTimeStampFuncs() {
-    RK_TIME_LOG("Updating timestamp functions\n");
+    timeLog("Updating timestamp functions\n");
     updateMonthFunc();
     updateDateFunc();
     updateTimeFunc();
 }
 
-} // namespace time
+} // namespace time_internal
 } // namespace rk
