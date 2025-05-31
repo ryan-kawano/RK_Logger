@@ -21,7 +21,7 @@ using ConfigMap = std::unordered_map<ConfigKey, ConfigValue>;
 using ValidValuesSet = std::unordered_set<ConfigValue>;
 using ValidKeyValuesMap = const std::unordered_map<ConfigKey, const ValidValuesSet>;
 
-extern const std::string CONFIG_FILE_NAME;
+inline const std::string CONFIG_FILE_NAME = "rk_config.txt";
 
 namespace date_format {
     extern const std::string KEY;
@@ -80,7 +80,7 @@ public:
      * 
      * @param path The path to the config file including the file name itself. The default path is the same directory as the executable.
      */
-    void parseLoggingConfig(const std::filesystem::path&);
+    void parseLoggingConfig(const std::filesystem::path& path = std::filesystem::path(CONFIG_FILE_NAME));
 
     /**
      * @brief Checks if a key is valid.
@@ -106,7 +106,7 @@ public:
      */
     const ValidKeyValuesMap& getValidKeyValues() const;
 private:
-    Config(ConfigMap&& defaultConfig, ValidKeyValuesMap&& keyValues) : config(std::move(defaultConfig)), validKeyValues(std::move(keyValues)) {};
+    Config(ConfigMap defaultConfig, ValidKeyValuesMap keyValues) : config(defaultConfig), validKeyValues(keyValues) {};
 
     ConfigMap config;
     ValidKeyValuesMap validKeyValues;
@@ -124,6 +124,14 @@ Config& getInstance();
 
 namespace rk {
 namespace config_internal {
+
+// The data below is the key/value constants put into containers to allow querying the data.
+extern const rk::config::ValidValuesSet dateFormat;
+extern const rk::config::ValidValuesSet monthFormat;
+extern const rk::config::ValidValuesSet hourFormat;
+extern const rk::config::ValidValuesSet writeToLogFile;
+extern rk::config::ValidKeyValuesMap validKeyValues;
+extern const rk::config::ConfigMap defaultConfig;
 
 /**
  * @brief Prints an internal log message for the config module.

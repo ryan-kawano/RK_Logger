@@ -10,7 +10,6 @@
 namespace rk {
 namespace config {
 
-const std::string CONFIG_FILE_NAME = "rk_config.txt";
 
 namespace date_format {
     const std::string KEY = "date_format";
@@ -36,45 +35,6 @@ namespace write_to_log_file {
     const std::string DISABLE = "DISABLE";
     const std::string ENABLE = "ENABLE";
 }
-
-// The data in this namespace is just the key/value constants above put into containers to allow querying the data.
-namespace {
-    ValidValuesSet dateFormat = {
-        date_format::MM_DD_YYYY,
-        date_format::DD_MM_YYYY,
-        date_format::YYYY_MM_DD,
-    };
-
-    ValidValuesSet monthFormat = {
-        month_format::MONTH_NUM,
-        month_format::MONTH_NAME,
-    };
-
-    ValidValuesSet hourFormat = {
-        hour_format::TWELVE_HOUR,
-        hour_format::TWENTY_FOUR_HOUR,
-    };
-
-    ValidValuesSet writeToLogFile = {
-        write_to_log_file::DISABLE,
-        write_to_log_file::ENABLE,
-    };
-
-    ValidKeyValuesMap validKeyValues = {
-        { date_format::KEY, dateFormat },
-        { month_format::KEY, monthFormat },
-        { hour_format::KEY, hourFormat },
-        { write_to_log_file::KEY, writeToLogFile },
-    };
-
-    ConfigMap defaultConfig = {
-        { date_format::KEY, date_format::MM_DD_YYYY },
-        { month_format::KEY, month_format::MONTH_NUM },
-        { hour_format::KEY, hour_format::TWELVE_HOUR },
-        { write_to_log_file::KEY, write_to_log_file::ENABLE },
-    };
-} // namespace
-
 
 void Config::setConfigValue(const ConfigKey key, const ConfigValue val) {
     if (!isKeyAndValueValid(key, val)) {
@@ -171,9 +131,50 @@ const ValidKeyValuesMap& Config::getValidKeyValues() const {
 }
 
 Config& getInstance() {
-    static Config configuration(std::move(defaultConfig), std::move(validKeyValues));
+    static Config configuration(rk::config_internal::defaultConfig, rk::config_internal::validKeyValues);
     return configuration;
 }
 
 } // namespace config
+} // namespace rk
+
+namespace rk {
+namespace config_internal {
+
+const rk::config::ValidValuesSet dateFormat = {
+    rk::config::date_format::MM_DD_YYYY,
+    rk::config::date_format::DD_MM_YYYY,
+    rk::config::date_format::YYYY_MM_DD,
+};
+
+const rk::config::ValidValuesSet monthFormat = {
+    rk::config::month_format::MONTH_NUM,
+    rk::config::month_format::MONTH_NAME,
+};
+
+const rk::config::ValidValuesSet hourFormat = {
+    rk::config::hour_format::TWELVE_HOUR,
+    rk::config::hour_format::TWENTY_FOUR_HOUR,
+};
+
+const rk::config::ValidValuesSet writeToLogFile = {
+    rk::config::write_to_log_file::DISABLE,
+    rk::config::write_to_log_file::ENABLE,
+};
+
+const rk::config::ValidKeyValuesMap validKeyValues = {
+    { rk::config::date_format::KEY, dateFormat },
+    { rk::config::month_format::KEY, monthFormat },
+    { rk::config::hour_format::KEY, hourFormat },
+    { rk::config::write_to_log_file::KEY, writeToLogFile },
+};
+
+const rk::config::ConfigMap defaultConfig = {
+    { rk::config::date_format::KEY, rk::config::date_format::MM_DD_YYYY },
+    { rk::config::month_format::KEY, rk::config::month_format::MONTH_NUM },
+    { rk::config::hour_format::KEY, rk::config::hour_format::TWELVE_HOUR },
+    { rk::config::write_to_log_file::KEY, rk::config::write_to_log_file::ENABLE },
+};
+
+} // namespace config_internal
 } // namespace rk
