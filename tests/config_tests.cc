@@ -47,7 +47,7 @@ INSTANTIATE_TEST_SUITE_P(ConfigIsKeyValid,
         ConfigKeyValueTestParam("", "a", false, "", false)
     ),
     [](const testing::TestParamInfo<ConfigKeyValueTestParam>& info) {
-        return std::string(!info.param.description.empty() ? info.param.description : "") + (info.param.keyForSuffix == "" ? info.param.key : info.param.keyForSuffix) + "_" + (info.param.isKeyValid ? "isValid" : "isInvalid");
+        return std::string(!info.param.description.empty() ? info.param.description : "") + (info.param.keyForSuffix.empty() ? info.param.key : info.param.keyForSuffix) + "_" + (info.param.isKeyValid ? "isValid" : "isInvalid");
     }
 );
 
@@ -104,7 +104,7 @@ INSTANTIATE_TEST_SUITE_P(ConfigIsKeyValueValid,
         ConfigKeyValueTestParam("", "a", false, "", false)
     ),
     [](const testing::TestParamInfo<ConfigKeyValueTestParam>& info) {
-        return std::string(!info.param.description.empty() ? info.param.description : "") + (info.param.keyForSuffix == "" ? info.param.key : info.param.keyForSuffix) + "_" + (info.param.isKeyValid ? "isValid" : "isInvalid") + "_" + info.param.value + "_" + (info.param.isValueValid ? "isValid" : "isInvalid");
+        return std::string(!info.param.description.empty() ? info.param.description : "") + (info.param.keyForSuffix.empty() ? info.param.key : info.param.keyForSuffix) + "_" + (info.param.isKeyValid ? "isValid" : "isInvalid") + "_" + info.param.value + "_" + (info.param.isValueValid ? "isValid" : "isInvalid");
     }
 );
 
@@ -130,7 +130,7 @@ INSTANTIATE_TEST_SUITE_P(ConfigGetKeyValueTest,
         ConfigKeyValueTestParam("", "YY_MM_DD", false, "", false)
     ),
     [](const testing::TestParamInfo<ConfigKeyValueTestParam>& info) {
-        return std::string(!info.param.description.empty() ? info.param.description : "") + (info.param.keyForSuffix == "" ? info.param.key : info.param.keyForSuffix) + "_" + (info.param.isKeyValid ? "isValid" : "isInvalid");
+        return std::string(!info.param.description.empty() ? info.param.description : "") + (info.param.keyForSuffix.empty() ? info.param.key : info.param.keyForSuffix) + "_" + (info.param.isKeyValid ? "isValid" : "isInvalid");
     }
 );
 
