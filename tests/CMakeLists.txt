@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.31.2)
 project(RK_Logger_tests_proj)
 
 # GoogleTest requires at least C++17
