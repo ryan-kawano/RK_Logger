@@ -10,6 +10,11 @@
 namespace rk {
 namespace config {
 
+const std::string CONFIG_FILE_EXTENSION = "yaml";
+const std::string CONFIG_FILE_NAME = "rk_config." + CONFIG_FILE_EXTENSION;
+const std::string KEY_VALUE_SEPARATOR = ":";
+const std::string COMMENT = "#";
+
 namespace date_format {
     const std::string KEY = "date_format";
     const std::string MM_DD_YYYY = "MM_DD_YYYY";
@@ -82,8 +87,8 @@ void Config::parseLoggingConfig(const std::filesystem::path& path) {
     std::string line;
     while (std::getline(configFile, line)) {
         // Skip anything that's a comment or doesn't have a ":"
-        const bool isComment = line.find('#') != std::string::npos;
-        const size_t colonIndex = line.find_first_of(':');
+        const bool isComment = line.find(rk::config::COMMENT) != std::string::npos;
+        const size_t colonIndex = line.find_first_of(rk::config::KEY_VALUE_SEPARATOR);
         if (isComment || colonIndex == std::string::npos) {
             continue;
         }
