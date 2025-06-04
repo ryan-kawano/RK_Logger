@@ -11,11 +11,10 @@ namespace config_tests {
 inline const std::string INVALID_KEY_GENERIC = "INVALID_KEY";
 inline const std::string INVALID_VALUE_GENERIC = "INVALID_VALUE";
 inline const std::string NO_KEY = "";
-inline const std::string RK_CFG_FILE = "rk_config.txt";
-inline const std::string RK_CFG_FILE_MODIFIED = "rk_config_modified.txt";
-inline const std::string RK_CFG_FILE_NON_EXISTENT = "rk_config_non_existent.txt";
+inline const std::string RK_CFG_FILE_MODIFIED = "rk_config_modified.yaml";
+inline const std::string RK_CFG_FILE_NON_EXISTENT = "rk_config_non_existent.yaml";
 inline const std::string RK_CFG_FILE_DIR = "test_data";
-inline const std::string RK_CFG_FILE_KEY_VALUE_SEPARATOR = "=";
+inline const std::string RK_CFG_FILE_KEY_VALUE_SEPARATOR = ":";
 inline const std::string TEMP_DIR = "temp";
 
 class ConfigTest : public Base {
@@ -61,8 +60,8 @@ protected:
     void SetUp() override {
         redirectStdCout();
         SCOPED_TRACE("Copying config file to the executable's location");
-        cfgFilePath = std::filesystem::path(RK_LOGGER_TESTS_BINARY_DIR)/RK_CFG_FILE;
-        std::filesystem::copy_file(std::filesystem::path(RK_LOGGER_TESTS_BASE_DIR)/RK_CFG_FILE_DIR/RK_CFG_FILE, cfgFilePath);
+        cfgFilePath = std::filesystem::path(RK_LOGGER_TESTS_BINARY_DIR)/rk::config::CONFIG_FILE_NAME;
+        std::filesystem::copy_file(std::filesystem::path(RK_LOGGER_TESTS_BASE_DIR)/RK_CFG_FILE_DIR/rk::config::CONFIG_FILE_NAME, cfgFilePath);
     }
     
     void TearDown() override {
@@ -92,7 +91,7 @@ protected:
     
     void modifyConfigFile(const ConfigFileTestParam::ConfigFileKeyValues& keyValues) {
         SCOPED_TRACE("Opening CFG base file");
-        std::filesystem::path path = std::filesystem::path(RK_LOGGER_TESTS_BASE_DIR)/RK_CFG_FILE_DIR/RK_CFG_FILE;
+        std::filesystem::path path = std::filesystem::path(RK_LOGGER_TESTS_BASE_DIR)/RK_CFG_FILE_DIR/rk::config::CONFIG_FILE_NAME;
         std::fstream configFileBase(path, std::ios::in);
         verifyConfigFile(configFileBase);
         
@@ -124,7 +123,7 @@ protected:
     std::string replaceConfigValue(std::string line, rk::config::ConfigValue value) const {
         size_t pos = line.find(RK_CFG_FILE_KEY_VALUE_SEPARATOR);
         if (pos != std::string::npos) {
-            line = line.substr(0, pos + 1) + value;
+            line = line.substr(0, pos + 1) + " " + value;
         }
 
         return line;

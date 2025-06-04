@@ -10,7 +10,6 @@
 namespace rk {
 namespace config {
 
-
 namespace date_format {
     const std::string KEY = "date_format";
     const std::string MM_DD_YYYY = "MM_DD_YYYY";
@@ -82,20 +81,26 @@ void Config::parseLoggingConfig(const std::filesystem::path& path) {
     // Read through the file and update the config with any valid settings
     std::string line;
     while (std::getline(configFile, line)) {
-        // Skip anything that's a comment or doesn't have an = sign
-        const bool hasStar = line.find('*') != std::string::npos;
-        const size_t equalsIndex = line.find_first_of('=');
-        if (hasStar || equalsIndex == std::string::npos) {
+        // Skip anything that's a comment or doesn't have a ":"
+        const bool isComment = line.find('#') != std::string::npos;
+        const size_t colonIndex = line.find_first_of(':');
+        if (isComment || colonIndex == std::string::npos) {
             continue;
         }
 
-        const ConfigKey configKey = line.substr(0, equalsIndex);
+        const ConfigKey configKey = line.substr(0, colonIndex);
         if (!isKeyValid(configKey)) {
             rk::config_internal::cfgLog("Key \"", configKey, "\" was not valid. Not updating.", "\n");
             continue;
         }
 
-        ConfigValue configValue = line.substr(equalsIndex + 1);
+        const size_t configValueIdx = line.find_first_not_of(" \t", colonIndex + 1);
+        if (configValueIdx == std::string::npos) {
+            rk::config_internal::cfgLog("Could not get the index of the Config value for key ", configKey, ". Not updating",  "\n");
+            continue;
+        }
+
+        ConfigValue configValue = line.substr(configValueIdx);
         // Remove new line at end of configValue, if it exists
         const size_t newLineIndex = configValue.find_last_of("\n");
         if (newLineIndex != std::string::npos && newLineIndex == configValue.size() - 1) {
