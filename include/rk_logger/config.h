@@ -21,7 +21,7 @@ using ConfigMap = std::unordered_map<ConfigKey, ConfigValue>;
 using ValidValuesSet = std::unordered_set<ConfigValue>;
 using ValidKeyValuesMap = const std::unordered_map<ConfigKey, const ValidValuesSet>;
 
-inline const std::string CONFIG_FILE_NAME = "rk_config.txt";
+inline const std::string CONFIG_FILE_NAME = "rk_config.yaml";
 
 namespace date_format {
     extern const std::string KEY;
