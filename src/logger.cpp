@@ -20,6 +20,7 @@ std::thread startLogger(const std::filesystem::path& configPath) {
         rk::log_internal::verifyLogFile();
     }
 
+    rk::log_internal::enableAutoFlush();
     std::thread logThread = rk::log_internal::startLogThread();
 
     return logThread;
@@ -73,6 +74,7 @@ void logQueueLoop() {
                 std::cout << msg;
                 if (logFile) {
                     logFile << msg;
+                    logFile.flush();
                 }
                 msg.clear();
             }
@@ -128,6 +130,10 @@ void verifyLogFile() {
         rkLogInternal("Unable to open output log file\n");
         throw -1;
     }
+}
+
+void enableAutoFlush() {
+    std::cout << std::unitbuf;
 }
 
 } // namespace log_internal
