@@ -129,6 +129,11 @@ void verifyLogFile();
 void enableAutoFlush();
 
 /**
+ * @brief Disables automatic flushing of the std::cout output stream.
+ */
+void disableAutoFlush();
+
+/**
  * @brief Prints an internal log message for the main logging module.
  * 
  * @param args The message to print.

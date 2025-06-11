@@ -29,6 +29,7 @@ std::thread startLogger(const std::filesystem::path& configPath) {
 void stopLogger(std::thread logThread) {
     rk::log_internal::rkLogInternal("Stopping RK Logger\n");
     rk::log_internal::endLogThread(std::move(logThread));
+    rk::log_internal::disableAutoFlush();
     if (rk::config::getInstance().getConfigValueByKey(rk::config::write_to_log_file::KEY) == rk::config::write_to_log_file::ENABLE) {
         rk::log_internal::closeLogFile();
     }
@@ -134,6 +135,10 @@ void verifyLogFile() {
 
 void enableAutoFlush() {
     std::cout << std::unitbuf;
+}
+
+void disableAutoFlush() {
+    std::cout << std::nounitbuf;
 }
 
 } // namespace log_internal
