@@ -2,3 +2,4 @@
 logs_*.txt
 build
 .vscode/settings.json
+*.DS_Store
