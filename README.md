@@ -161,7 +161,7 @@ Writing to log file: logs_05-12-2025_07-41-27.004 PM.txt
 
 ## Usage
 
-See the [demonstration](/src/demonstration") directory for an example on using the logger or see the example below.
+See the [demonstration](/src/demonstration) directory for an example on using the logger or see the example below.
 
 <strong>Example usage:</strong>
 
