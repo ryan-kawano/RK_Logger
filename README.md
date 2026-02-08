@@ -146,7 +146,7 @@ Writing to log file: logs_05-12-2025_07-41-27.004 PM.txt
 
 ### Prerequisites
 
-- [CMake](https://cmake.org/download/) - Recommended. Technically, the project is buildable without CMake, but it can be tedious.
+- [CMake](https://cmake.org/download/)
 - A build system such as Make, Ninja, etc.
 - A C++ compiler.
 
